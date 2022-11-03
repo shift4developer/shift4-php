@@ -1,0 +1,20 @@
+{
+  "name": "shift4/shift4-php",
+  "description": "Shift4 PHP Library",
+  "homepage": "https://dev.shift4.com/",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Shift4",
+      "homepage": "https://dev.shift4.com/"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Shift4\\": "lib/Shift4/"
+    }
+  }
+}
