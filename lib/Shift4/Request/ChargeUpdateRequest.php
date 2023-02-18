@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Request;
 
 class ChargeUpdateRequest extends AbstractRequest
@@ -67,12 +68,12 @@ class ChargeUpdateRequest extends AbstractRequest
     {
         return $this->getObject('billing', '\Shift4\Request\BillingRequest');
     }
-    
+
     public function billing($billing)
     {
         return $this->set('billing', $billing);
     }
-    
+
     public function getMetadata()
     {
         return $this->get('metadata');

@@ -1,9 +1,10 @@
 <?php
+
 namespace Shift4\Request;
 
 class PayoutListRequest extends AbstractRequest
 {
-    
+
     public function getLimit()
     {
         return $this->get('limit');
@@ -38,12 +39,12 @@ class PayoutListRequest extends AbstractRequest
     {
         return $this->get('includeTotalCount');
     }
-    
+
     public function includeTotalCount($includeTotalCount)
     {
         return $this->set('includeTotalCount', $includeTotalCount);
     }
-    
+
     /**
      * @return \Shift4\Request\CreatedFilter
      */

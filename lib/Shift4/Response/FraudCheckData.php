@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Response;
 
 class FraudCheckData extends AbstractResponse

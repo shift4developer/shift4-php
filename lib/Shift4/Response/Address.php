@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Response;
 
 class Address extends AbstractResponse

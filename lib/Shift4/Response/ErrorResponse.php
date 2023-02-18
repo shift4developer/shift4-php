@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Response;
 
 class ErrorResponse extends AbstractResponse
@@ -18,12 +19,12 @@ class ErrorResponse extends AbstractResponse
     {
         return $this->getObject('error')->get('code');
     }
-    
+
     public function getIssuerDeclineCode()
     {
         return $this->getObject('error')->get('issuerDeclineCode');
     }
-    
+
     public function getChargeId()
     {
         return $this->getObject('error')->get('chargeId');
@@ -33,7 +34,7 @@ class ErrorResponse extends AbstractResponse
     {
         return $this->getObject('error')->get('creditId');
     }
-    
+
     public function getBlacklistRuleId()
     {
         return $this->getObject('error')->get('blacklistRuleId');

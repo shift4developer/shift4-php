@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Request;
 
 class CrossSaleOfferUpdateRequest extends AbstractRequest
@@ -8,7 +9,7 @@ class CrossSaleOfferUpdateRequest extends AbstractRequest
     {
         return $this->get('crossSaleOfferId');
     }
-    
+
     public function crossSaleOfferId($crossSaleOfferId)
     {
         return $this->set('crossSaleOfferId', $crossSaleOfferId);
@@ -114,12 +115,12 @@ class CrossSaleOfferUpdateRequest extends AbstractRequest
     {
         return $this->get('url');
     }
-    
+
     public function url($url)
     {
         return $this->set('url', $url);
     }
-    
+
     public function getVisibleForAllPartners()
     {
         return $this->get('visibleForAllPartners');

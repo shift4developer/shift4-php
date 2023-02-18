@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Response;
 
 class Token extends AbstractResponse
@@ -65,7 +66,7 @@ class Token extends AbstractResponse
     }
 
     /**
-     * 
+     *
      * @return \Shift4\Response\Card
      */
     public function getCard()

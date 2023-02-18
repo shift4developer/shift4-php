@@ -1,63 +1,69 @@
 <?php
+
 namespace Shift4\Request;
 
 use Shift4\Exception\MappingException;
 
-abstract class AbstractRequest {
+abstract class AbstractRequest
+{
 
-	private $data = array();
+    private $data = array();
 
-	public function __construct($dataArray = null) {
-		if (is_array($dataArray)) {
-			$this->data = $dataArray;
-		} elseif ($dataArray !== null) {
-			throw new MappingException('Constructor parameter must be an array');
-		}
-	}
+    public function __construct($dataArray = null)
+    {
+        if (is_array($dataArray)) {
+            $this->data = $dataArray;
+        } elseif ($dataArray !== null) {
+            throw new MappingException('Constructor parameter must be an array');
+        }
+    }
 
-	public function toArray() {
-		$array = $this->data;
+    public function toArray()
+    {
+        $array = $this->data;
 
-		foreach ($array as $key => $value) {
-			if ($value instanceof AbstractRequest) {
-				$array[$key] = $value->toArray();
-			}
-		}
-		
-		return $array;
-	}
+        foreach ($array as $key => $value) {
+            if ($value instanceof AbstractRequest) {
+                $array[$key] = $value->toArray();
+            }
+        }
 
-	public function get($field, $default = null) {
-		if (!isset($this->data[$field])) {
-			return $default;
-		}
+        return $array;
+    }
 
-		return $this->data[$field];
-	}
+    public function get($field, $default = null)
+    {
+        if (!isset($this->data[$field])) {
+            return $default;
+        }
+
+        return $this->data[$field];
+    }
 
     public function getObject($field, $className)
     {
         if (!array_key_exists($field, $this->data)) {
             return null;
         }
-        
+
         $object = new $className();
-        $object->data = & $this->data[$field];
-        
+        $object->data = &$this->data[$field];
+
         return $object;
     }
 
-	public function set($field, $value) {
-	    if ($value instanceof AbstractRequest) {
-	        $value = $value->toArray();
-	    }
-	    
-	    if ($value === null) {
-	        unset($this->data[$field]);
-	        return $this;
-	    }
-	    
-		$this->data[$field] = $value;
+    public function set($field, $value)
+    {
+        if ($value instanceof AbstractRequest) {
+            $value = $value->toArray();
+        }
+
+        if ($value === null) {
+            unset($this->data[$field]);
+            return $this;
+        }
+
+        $this->data[$field] = $value;
         return $this;
-	}
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Response;
 
 class Event extends AbstractResponse
@@ -27,7 +28,7 @@ class Event extends AbstractResponse
     public function getData()
     {
         $data = $this->get('data');
-        
+
         switch ($data['objectType']) {
             case 'customer':
                 return new Customer($data);
@@ -49,7 +50,7 @@ class Event extends AbstractResponse
                 return $data;
         }
     }
-    
+
     public function getLog()
     {
         return $this->get('log');

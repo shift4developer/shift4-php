@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Response;
 
 class BlacklistRule extends AbstractResponse
@@ -68,17 +69,17 @@ class BlacklistRule extends AbstractResponse
     {
         return $this->get('acceptLanguage');
     }
-    
+
     public function getCardCountry()
     {
         return $this->get('cardCountry');
     }
-    
+
     public function getCardBin()
     {
         return $this->get('cardBin');
     }
-    
+
     public function getCardIssuer()
     {
         return $this->get('cardIssuer');

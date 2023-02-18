@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Connection;
 
 use Shift4\Exception\ConnectionException;
@@ -29,25 +30,25 @@ class WordPressConnection extends Connection
     {
         $headers['User-Agent'] .= ' WordPress/' . get_bloginfo('version');
 
-        $response = wp_remote_request($url, 
+        $response = wp_remote_request($url,
             array(
-                'method' => $httpMethod,
+                'method'  => $httpMethod,
                 'headers' => $headers,
-                'body' => $requestBody,
+                'body'    => $requestBody,
                 'timeout' => 62
             ));
-        
+
         if (is_wp_error($response)) {
             throw new ConnectionException($response->get_error_message());
         }
-        
+
         return array(
-            'status' => $response['response']['code'],
+            'status'  => $response['response']['code'],
             'headers' => $response['headers'],
-            'body' => $response['body']
+            'body'    => $response['body']
         );
     }
-    
+
     public function multipart($url, $files, $form, $headers)
     {
         throw new \Exception('Multipart request in not supported by WordPressConnection');

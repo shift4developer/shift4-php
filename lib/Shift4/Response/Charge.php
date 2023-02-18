@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Response;
 
 class Charge extends AbstractResponse
@@ -33,7 +34,7 @@ class Charge extends AbstractResponse
     {
         return $this->get('amountRefunded');
     }
-    
+
     public function getCurrency()
     {
         return $this->get('currency');
@@ -82,7 +83,7 @@ class Charge extends AbstractResponse
     {
         return $this->get('subscriptionId');
     }
-    
+
     public function getCaptured()
     {
         return $this->get('captured');
@@ -121,7 +122,7 @@ class Charge extends AbstractResponse
     {
         return $this->getObject('shipping', '\Shift4\Response\Shipping');
     }
-    
+
     /**
      * @return \Shift4\Response\Billing
      */
@@ -166,7 +167,7 @@ class Charge extends AbstractResponse
     {
         return $this->get('merchantAccountId');
     }
-    
+
     public function getMetadata()
     {
         return $this->get('metadata');
@@ -181,7 +182,7 @@ class Charge extends AbstractResponse
     {
         return $this->get('failureIssuerDeclineCode');
     }
-    
+
     public function getFailureMessage()
     {
         return $this->get('failureMessage');

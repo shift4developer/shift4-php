@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Request;
 
 class CustomerListRequest extends AbstractRequest
@@ -66,12 +67,12 @@ class CustomerListRequest extends AbstractRequest
     {
         return $this->set('deleted', $deleted);
     }
-    
+
     public function getEmail()
     {
         return $this->get('email');
     }
-    
+
     public function email($email)
     {
         return $this->set('email', $email);

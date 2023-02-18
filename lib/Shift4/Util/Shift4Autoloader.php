@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Util;
 
 /**
@@ -10,34 +11,39 @@ namespace Shift4\Util;
  * \Shift4\Util\Shift4Autoloader::register();
  * </code>
  */
-class Shift4Autoloader {
-	private $classPrefix = 'Shift4\\';
-	private $baseDir;
+class Shift4Autoloader
+{
+    private $classPrefix = 'Shift4\\';
+    private $baseDir;
 
-	private function __construct() {
-		$this->baseDir = realpath(__DIR__ . '/../../') . '/';
-		
-		spl_autoload_register(array($this, 'autoload'));
-	}
+    private function __construct()
+    {
+        $this->baseDir = realpath(__DIR__ . '/../../') . '/';
 
-	public function autoload($class) {
-		if (!$this->startsWithPrefix($class)) {
-			return;
-		}
-		
-		$file = $this->baseDir . str_replace('\\', '/', $class) . '.php';
-		
-		if (file_exists($file)) {
-			require_once $file;
-		}
-	}
+        spl_autoload_register(array($this, 'autoload'));
+    }
 
-	private function startsWithPrefix($class) {
-		$len = strlen($this->classPrefix);
-		return strncmp($this->classPrefix, $class, $len) === 0;
-	}
+    public function autoload($class)
+    {
+        if (!$this->startsWithPrefix($class)) {
+            return;
+        }
 
-	public static function register() {
-		new Shift4Autoloader();
-	}
+        $file = $this->baseDir . str_replace('\\', '/', $class) . '.php';
+
+        if (file_exists($file)) {
+            require_once $file;
+        }
+    }
+
+    private function startsWithPrefix($class)
+    {
+        $len = strlen($this->classPrefix);
+        return strncmp($this->classPrefix, $class, $len) === 0;
+    }
+
+    public static function register()
+    {
+        new Shift4Autoloader();
+    }
 }

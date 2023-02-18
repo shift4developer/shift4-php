@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Request;
 
 class CheckoutRequestCharge extends AbstractRequest
@@ -38,7 +39,7 @@ class CheckoutRequestCharge extends AbstractRequest
     {
         return $this->get('metadata');
     }
-    
+
     public function metadata($metadata)
     {
         return $this->set('metadata', $metadata);

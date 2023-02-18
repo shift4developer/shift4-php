@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Request;
 
 class CrossSaleOfferListRequest extends AbstractRequest
@@ -66,12 +67,12 @@ class CrossSaleOfferListRequest extends AbstractRequest
     {
         return $this->set('deleted', $deleted);
     }
-    
+
     public function getPartnerId()
     {
         return $this->get('partnerId');
     }
-    
+
     public function partnerId($partnerId)
     {
         return $this->set('partnerId', $partnerId);

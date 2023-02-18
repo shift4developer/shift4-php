@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Response;
 
 class ChargeWithCrossSale extends AbstractResponse
@@ -33,7 +34,7 @@ class ChargeWithCrossSale extends AbstractResponse
     {
         return $this->get('currency');
     }
-    
+
     public function getSubscriptionId()
     {
         return $this->get('subscriptionId');

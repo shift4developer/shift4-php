@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Request;
 
 class ChargeRequest extends AbstractRequest
@@ -50,7 +51,7 @@ class ChargeRequest extends AbstractRequest
     public function getCard()
     {
         $card = $this->get('card');
-        
+
         if (is_array($card)) {
             return $this->getObject('card', '\Shift4\Request\CardRequest');
         } else {
@@ -148,12 +149,12 @@ class ChargeRequest extends AbstractRequest
     {
         return $this->get('merchantAccountId');
     }
-    
+
     public function merchantAccountId($merchantAccountId)
     {
         return $this->set('merchantAccountId', $merchantAccountId);
     }
-    
+
     public function getMetadata()
     {
         return $this->get('metadata');

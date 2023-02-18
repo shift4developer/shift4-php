@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Request;
 
 class FraudWarningListRequest extends AbstractRequest
@@ -56,12 +57,12 @@ class FraudWarningListRequest extends AbstractRequest
     {
         return $this->set('created', $created);
     }
-    
+
     public function getCharge()
     {
         return $this->get('charge');
     }
-    
+
     public function charge($charge)
     {
         return $this->set('charge', $charge);

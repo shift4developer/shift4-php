@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Response;
 
 class ThreeDSecureInfo extends AbstractResponse
@@ -28,12 +29,12 @@ class ThreeDSecureInfo extends AbstractResponse
     {
         return $this->get('liabilityShift');
     }
-    
+
     public function getVersion()
     {
         return $this->get('version');
     }
-    
+
     public function getAuthenticationFlow()
     {
         return $this->get('authenticationFlow');

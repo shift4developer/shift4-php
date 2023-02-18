@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Request;
 
 class ShippingRequest extends AbstractRequest

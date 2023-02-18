@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Response;
 
 class Dispute extends AbstractResponse
@@ -13,7 +14,7 @@ class Dispute extends AbstractResponse
     {
         return $this->get('id');
     }
-    
+
     public function getCreated()
     {
         return $this->get('created');
@@ -23,32 +24,32 @@ class Dispute extends AbstractResponse
     {
         return $this->get('updated');
     }
-    
+
     public function getAmount()
     {
         return $this->get('amount');
     }
-    
+
     public function getCurrency()
     {
         return $this->get('currency');
     }
-    
+
     public function getStatus()
     {
         return $this->get('status');
     }
-    
+
     public function getReason()
     {
         return $this->get('reason');
     }
-    
+
     public function getAcceptedAsLost()
     {
         return $this->get('acceptedAsLost');
     }
-    
+
     /**
      * @return \Shift4\Response\DisputeEvidence
      */
@@ -56,7 +57,7 @@ class Dispute extends AbstractResponse
     {
         return $this->getObject('evidence', '\Shift4\Response\DisputeEvidence');
     }
-    
+
     /**
      * @return \Shift4\Response\DisputeEvidenceDetails
      */
@@ -64,7 +65,7 @@ class Dispute extends AbstractResponse
     {
         return $this->getObject('evidenceDetails', '\Shift4\Response\DisputeEvidenceDetails');
     }
-    
+
     /**
      * @return \Shift4\Response\Charge
      */

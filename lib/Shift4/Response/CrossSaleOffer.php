@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Response;
 
 class CrossSaleOffer extends AbstractResponse
@@ -97,7 +98,7 @@ class CrossSaleOffer extends AbstractResponse
     {
         return $this->get('url');
     }
-    
+
     public function getMetadata()
     {
         return $this->get('metadata');

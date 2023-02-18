@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Request;
 
 class PlanUpdateRequest extends AbstractRequest
@@ -18,22 +19,22 @@ class PlanUpdateRequest extends AbstractRequest
     {
         return $this->get('amount');
     }
-    
+
     public function amount($amount)
     {
         return $this->set('amount', $amount);
     }
-    
+
     public function getCurrency()
     {
         return $this->get('currency');
     }
-    
+
     public function currency($currency)
     {
         return $this->set('currency', $currency);
     }
-    
+
     public function getName()
     {
         return $this->get('name');

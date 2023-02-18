@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Request;
 
 class SubscriptionUpdateRequest extends AbstractRequest
@@ -61,7 +62,7 @@ class SubscriptionUpdateRequest extends AbstractRequest
     {
         return $this->get('captureCharges');
     }
-    
+
     public function captureCharges($captureCharges)
     {
         return $this->set('captureCharges', $captureCharges);
@@ -107,12 +108,12 @@ class SubscriptionUpdateRequest extends AbstractRequest
     {
         return $this->get('merchantAccountId');
     }
-    
+
     public function merchantAccountId($merchantAccountId)
     {
         return $this->set('merchantAccountId', $merchantAccountId);
     }
-    
+
     public function getMetadata()
     {
         return $this->get('metadata');
