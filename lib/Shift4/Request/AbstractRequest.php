@@ -7,7 +7,7 @@ use Shift4\Exception\MappingException;
 abstract class AbstractRequest
 {
 
-    private $data = array();
+    private $data = [];
 
     public function __construct($dataArray = null)
     {

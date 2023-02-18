@@ -38,15 +38,15 @@ use Shift4\Exception\Shift4Exception;
 
 $gateway = new Shift4Gateway('sk_test_[YOUR_SECRET_KEY]');
 
-$request = array(
+$request = [
     'amount' => 499,
     'currency' => 'EUR',
-    'card' => array(
+    'card' => [
         'number' => '4242424242424242',
         'expMonth' => 11,
         'expYear' => 2022
-    )
-);
+    ]
+];
 
 try {
     $charge = $gateway->createCharge($request);

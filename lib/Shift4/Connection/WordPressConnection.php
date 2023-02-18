@@ -26,27 +26,27 @@ class WordPressConnection extends Connection
         return $this->httpRequest('DELETE', $url, $headers);
     }
 
-    private function httpRequest($httpMethod, $url, $headers = array(), $requestBody = null)
+    private function httpRequest($httpMethod, $url, $headers = [], $requestBody = null)
     {
         $headers['User-Agent'] .= ' WordPress/' . get_bloginfo('version');
 
         $response = wp_remote_request($url,
-            array(
+            [
                 'method'  => $httpMethod,
                 'headers' => $headers,
                 'body'    => $requestBody,
                 'timeout' => 62
-            ));
+            ]);
 
         if (is_wp_error($response)) {
             throw new ConnectionException($response->get_error_message());
         }
 
-        return array(
+        return [
             'status'  => $response['response']['code'],
             'headers' => $response['headers'],
             'body'    => $response['body']
-        );
+        ];
     }
 
     public function multipart($url, $files, $form, $headers)

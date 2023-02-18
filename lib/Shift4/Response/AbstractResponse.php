@@ -40,10 +40,10 @@ class AbstractResponse
     public function getObjectsList($field, $className = '\Shift4\Response\AbstractResponse')
     {
         if (!isset($this->data[$field])) {
-            return array();
+            return [];
         }
 
-        $list = array();
+        $list = [];
         foreach ($this->data[$field] as $value) {
             $list[] = new $className($value);
         }

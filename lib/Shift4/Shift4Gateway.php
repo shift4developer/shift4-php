@@ -462,8 +462,8 @@ class Shift4Gateway
      */
     public function createFileUpload($file, $purpose)
     {
-        $files = array('file' => $file);
-        $form = array('purpose' => $purpose);
+        $files = ['file' => $file];
+        $form = ['purpose' => $purpose];
 
         return $this->multipart('/files', $files, $form, '\Shift4\Response\FileUpload');
     }
@@ -685,11 +685,11 @@ class Shift4Gateway
 
     private function buildHeaders()
     {
-        return array(
+        return [
             'Authorization' => 'Basic ' . base64_encode($this->privateKey . ':'),
             'Content-Type'  => 'application/json',
             'User-Agent'    => ($this->userAgent ? $this->userAgent . ' ' : '') . 'Shift4-PHP/' . self::VERSION . ' (PHP/' . phpversion() . ')'
-        );
+        ];
     }
 
     public function setPrivateKey($privateKey)

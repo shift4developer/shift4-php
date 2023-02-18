@@ -33,7 +33,7 @@ class ObjectSerializer
 
     private function transformForJson($array)
     {
-        if ($array === array()) {
+        if ($array === []) {
             return (object)null;
         }
 
@@ -116,7 +116,7 @@ class ObjectSerializer
 
     public function findPathVars($path)
     {
-        $matches = array();
+        $matches = [];
         preg_match_all('/\{(\w+)}/', $path, $matches);
 
         return $matches[1];
@@ -127,14 +127,14 @@ class ObjectSerializer
         if (function_exists('json_last_error_msg')) {
             return $message . ': ' . json_last_error_msg();
         } elseif (function_exists('json_last_error')) {
-            static $errors = array(
+            static $errors = [
                 JSON_ERROR_NONE           => 'No error has occurred',
                 JSON_ERROR_DEPTH          => 'The maximum stack depth has been exceeded',
                 JSON_ERROR_STATE_MISMATCH => 'Invalid or malformed JSON',
                 JSON_ERROR_CTRL_CHAR      => 'Control character error, possibly incorrectly encoded',
                 JSON_ERROR_SYNTAX         => 'Syntax error',
                 JSON_ERROR_UTF8           => 'Malformed UTF-8 characters, possibly incorrectly encoded'
-            );
+            ];
 
             $error = json_last_error();
             return $message . ': ' . (array_key_exists($error, $errors) ? $errors[$error] : 'Unknown error ' . $error);

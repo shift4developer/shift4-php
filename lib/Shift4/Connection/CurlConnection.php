@@ -9,7 +9,7 @@ class CurlConnection extends Connection
 
     private $extraOptions;
 
-    public function __construct($extraOptions = array())
+    public function __construct($extraOptions = [])
     {
         if (!extension_loaded('curl')) {
             throw new \Exception('Please install the PHP cURL extension');
@@ -35,7 +35,7 @@ class CurlConnection extends Connection
 
     public function multipart($url, $files, $form, $headers)
     {
-        $request = array();
+        $request = [];
 
         foreach ($files as $key => $file) {
             $request[$key] = curl_file_create($file, null, basename($file));
@@ -49,19 +49,19 @@ class CurlConnection extends Connection
         return $this->httpRequest('POST', $url, $headers, $request);
     }
 
-    private function httpRequest($httpMethod, $url, $headers = array(), $requestBody = null)
+    private function httpRequest($httpMethod, $url, $headers = [], $requestBody = null)
     {
         $version = curl_version();
         $headers['User-Agent'] .= ' Curl/' . $version['version'];
 
-        $curlOpts = array(
+        $curlOpts = [
             CURLOPT_CUSTOMREQUEST  => $httpMethod,
             CURLOPT_URL            => $url,
             CURLOPT_HTTPHEADER     => $this->buildHeaders($headers),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CONNECTTIMEOUT => 10,
             CURLOPT_TIMEOUT        => 62
-        );
+        ];
 
         if ($requestBody) {
             $curlOpts[CURLOPT_POSTFIELDS] = $requestBody;
@@ -84,18 +84,18 @@ class CurlConnection extends Connection
 
         curl_close($curl);
 
-        return array(
+        return [
             'status'  => $responseInfo['http_code'],
-            'headers' => array(
+            'headers' => [
                 'Content-Type' => $responseInfo['content_type']
-            ),
+            ],
             'body'    => $responseBody
-        );
+        ];
     }
 
     private function buildHeaders($headers)
     {
-        $result = array();
+        $result = [];
 
         foreach ($headers as $name => $value) {
             $result[] = $name . ': ' . $value;

@@ -20,7 +20,7 @@ class Shift4Autoloader
     {
         $this->baseDir = realpath(__DIR__ . '/../../') . '/';
 
-        spl_autoload_register(array($this, 'autoload'));
+        spl_autoload_register([$this, 'autoload']);
     }
 
     public function autoload($class)
