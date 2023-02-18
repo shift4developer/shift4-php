@@ -8,15 +8,10 @@ If you don't already have Shift4 account you can create it [here](https://dev.sh
 
 Best way to use this library is via [Composer](http://getcomposer.org/).
 
-To do this you will need to add this configuration to your `composer.json`:
-
-```json
-{
-  "require": {
-    "shift4/shift4-php": "^2.5.0"
-  }
-}
 ```
+composer require shift4/shift4-php
+```
+
 
 Then to use the library, you can use Composer's autoloader:
 
