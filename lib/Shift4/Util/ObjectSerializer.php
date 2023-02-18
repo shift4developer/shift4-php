@@ -117,7 +117,7 @@ class ObjectSerializer
     public function findPathVars($path)
     {
         $matches = array();
-        preg_match_all('/\{(\w+)\}/', $path, $matches);
+        preg_match_all('/\{(\w+)}/', $path, $matches);
 
         return $matches[1];
     }
