@@ -611,9 +611,9 @@ class Shift4Gateway
         $path = '';
         $data = $this->objectSerializer->serialize($request, $path);
 
-        $signarute = hash_hmac('sha256', $data, $this->privateKey);
+        $signature = hash_hmac('sha256', $data, $this->privateKey);
 
-        return base64_encode($signarute . "|" . $data);
+        return base64_encode($signature . "|" . $data);
     }
 
     private function get($path, $responseClass)
