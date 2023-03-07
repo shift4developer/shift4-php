@@ -9,7 +9,7 @@ use Shift4\Util\ObjectSerializer;
 
 class Shift4Gateway
 {
-    const VERSION = '2.5.0';
+    const VERSION = '2.0.0';
     const DEFAULT_ENDPOINT = 'https://api.shift4.com';
     const DEFAULT_UPLOADS_ENDPOINT = "https://uploads.api.shift4.com/";
 
