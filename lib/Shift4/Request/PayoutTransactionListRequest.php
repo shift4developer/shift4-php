@@ -1,9 +1,10 @@
 <?php
+
 namespace Shift4\Request;
 
 class PayoutTransactionListRequest extends AbstractRequest
 {
-    
+
     public function getLimit()
     {
         return $this->get('limit');
@@ -46,32 +47,32 @@ class PayoutTransactionListRequest extends AbstractRequest
     {
         return $this->set('created', $created);
     }
-    
+
     public function getIncludeTotalCount()
     {
         return $this->get('includeTotalCount');
     }
-    
+
     public function includeTotalCount($includeTotalCount)
     {
         return $this->set('includeTotalCount', $includeTotalCount);
     }
-    
+
     public function getPayout()
     {
         return $this->get('payout');
     }
-    
+
     public function payout($payout)
     {
         return $this->set('payout', $payout);
     }
-    
+
     public function getSource()
     {
         return $this->get('source');
     }
-    
+
     public function source($source)
     {
         return $this->set('source', $source);

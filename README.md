@@ -8,15 +8,10 @@ If you don't already have Shift4 account you can create it [here](https://dev.sh
 
 Best way to use this library is via [Composer](http://getcomposer.org/).
 
-To do this you will need to add this configuration to your `composer.json`:
-
-```json
-{
-  "require": {
-    "shift4/shift4-php": "^2.5.0"
-  }
-}
 ```
+composer require shift4/shift4-php
+```
+
 
 Then to use the library, you can use Composer's autoloader:
 
@@ -43,15 +38,15 @@ use Shift4\Exception\Shift4Exception;
 
 $gateway = new Shift4Gateway('sk_test_[YOUR_SECRET_KEY]');
 
-$request = array(
+$request = [
     'amount' => 499,
     'currency' => 'EUR',
-    'card' => array(
+    'card' => [
         'number' => '4242424242424242',
         'expMonth' => 11,
         'expYear' => 2022
-    )
-);
+    ]
+];
 
 try {
     $charge = $gateway->createCharge($request);

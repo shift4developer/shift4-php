@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Request;
 
 class CrossSaleOfferRequest extends AbstractRequest
@@ -119,17 +120,17 @@ class CrossSaleOfferRequest extends AbstractRequest
     {
         return $this->set('visibleForPartnerIds', $visibleForPartnerIds);
     }
-    
+
     public function getUrl()
     {
         return $this->get('url');
     }
-    
+
     public function url($url)
     {
         return $this->set('url', $url);
     }
-    
+
     public function getMetadata()
     {
         return $this->get('metadata');

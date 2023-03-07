@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Response;
 
 class Card extends AbstractResponse
@@ -116,7 +117,7 @@ class Card extends AbstractResponse
     {
         return $this->get('merchantAccountId');
     }
-    
+
     /**
      * @return \Shift4\Response\FastCredit
      */

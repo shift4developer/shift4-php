@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Response;
 
 class Payout extends AbstractResponse
@@ -23,7 +24,7 @@ class Payout extends AbstractResponse
     {
         return $this->get('amount');
     }
-    
+
     public function getCurrency()
     {
         return $this->get('currency');
@@ -33,7 +34,7 @@ class Payout extends AbstractResponse
     {
         return $this->get('periodStart');
     }
-    
+
     public function getPeriodEnd()
     {
         return $this->get('periodEnd');

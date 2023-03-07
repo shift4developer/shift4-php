@@ -1,9 +1,10 @@
 <?php
+
 namespace Shift4\Request;
 
 class RefundListRequest extends AbstractRequest
 {
-    
+
     public function getLimit()
     {
         return $this->get('limit');
@@ -56,12 +57,12 @@ class RefundListRequest extends AbstractRequest
     {
         return $this->set('created', $created);
     }
-    
+
     public function getChargeId()
     {
         return $this->get('chargeId');
     }
-    
+
     public function chargeId($customerId)
     {
         return $this->set('chargeId', $customerId);

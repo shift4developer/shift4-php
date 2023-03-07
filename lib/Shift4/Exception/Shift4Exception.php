@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Exception;
 
 use Shift4\Response\ErrorResponse;
@@ -11,12 +12,12 @@ class Shift4Exception extends \Exception
     private $chargeId;
     private $creditId;
     private $blacklistRuleId;
-    
+
     public function __construct($error = null)
     {
         if ($error instanceof ErrorResponse) {
             parent::__construct($error->getMessage());
-            
+
             $this->type = $error->getType();
             $this->code = $error->getCode();
             $this->issuerDeclineCode = $error->getIssuerDeclineCode();
@@ -32,7 +33,7 @@ class Shift4Exception extends \Exception
     {
         return $this->type;
     }
-    
+
     public function getIssuerDeclineCode()
     {
         return $this->issuerDeclineCode;
@@ -47,7 +48,7 @@ class Shift4Exception extends \Exception
     {
         return $this->creditId;
     }
-    
+
     public function getBlacklistRuleId()
     {
         return $this->blacklistRuleId;

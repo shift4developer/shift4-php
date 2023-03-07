@@ -1,20 +1,21 @@
 <?php
+
 namespace Shift4\Response;
 
 class FraudDetails extends AbstractResponse
 {
-	
-	public function __construct($response)
-	{
-		parent::__construct($response);
-	}
 
-	public function getStatus()
-	{
-	    return $this->get('status');
-	}
+    public function __construct($response)
+    {
+        parent::__construct($response);
+    }
 
-	public function getScore()
+    public function getStatus()
+    {
+        return $this->get('status');
+    }
+
+    public function getScore()
     {
         return $this->get('score');
     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Request;
 
 class CheckoutRequest extends AbstractRequest
@@ -80,7 +81,7 @@ class CheckoutRequest extends AbstractRequest
     {
         return $this->getObject('threeDSecure', '\Shift4\Request\CheckoutRequestThreeDSecure');
     }
-    
+
     public function threeDSecure($threeDSecure)
     {
         return $this->set('threeDSecure', $threeDSecure);
@@ -90,7 +91,7 @@ class CheckoutRequest extends AbstractRequest
     {
         return $this->get('termsAndConditionsUrl');
     }
-    
+
     public function termsAndConditionsUrl($termsAndConditionsUrl)
     {
         return $this->set('termsAndConditionsUrl', $termsAndConditionsUrl);

@@ -1,9 +1,10 @@
 <?php
+
 namespace Shift4\Request;
 
 class CreditListRequest extends AbstractRequest
 {
-    
+
     public function getLimit()
     {
         return $this->get('limit');
@@ -56,12 +57,12 @@ class CreditListRequest extends AbstractRequest
     {
         return $this->set('created', $created);
     }
-    
+
     public function getCustomerId()
     {
         return $this->get('customerId');
     }
-    
+
     public function customerId($customerId)
     {
         return $this->set('customerId', $customerId);

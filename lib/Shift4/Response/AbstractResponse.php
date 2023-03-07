@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Response;
 
 use Shift4\Exception\MappingException;
@@ -10,12 +11,12 @@ class AbstractResponse
 
     public function __construct($dataArray = null)
     {
-		if (is_array($dataArray)) {
-			$this->data = $dataArray;
-		} elseif ($dataArray !== null) {
-			throw new MappingException('Constructor parameter must be an array');
-		}
-        
+        if (is_array($dataArray)) {
+            $this->data = $dataArray;
+        } elseif ($dataArray !== null) {
+            throw new MappingException('Constructor parameter must be an array');
+        }
+
     }
 
     public function get($field, $default = null)
@@ -23,7 +24,7 @@ class AbstractResponse
         if (!isset($this->data[$field])) {
             return $default;
         }
-        
+
         return $this->data[$field];
     }
 
@@ -39,10 +40,10 @@ class AbstractResponse
     public function getObjectsList($field, $className = '\Shift4\Response\AbstractResponse')
     {
         if (!isset($this->data[$field])) {
-            return array();
+            return [];
         }
-        
-        $list = array();
+
+        $list = [];
         foreach ($this->data[$field] as $value) {
             $list[] = new $className($value);
         }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Response;
 
 class DisputeEvidenceDetails extends AbstractResponse
@@ -13,17 +14,17 @@ class DisputeEvidenceDetails extends AbstractResponse
     {
         return $this->get('dueBy');
     }
-    
+
     public function getHasEvidence()
     {
         return $this->get('hasEvidence');
     }
-    
+
     public function getPastDue()
     {
         return $this->get('pastDue');
     }
-    
+
     public function getSubmissionCount()
     {
         return $this->get('submissionCount');

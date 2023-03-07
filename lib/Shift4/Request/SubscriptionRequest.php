@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Request;
 
 class SubscriptionRequest extends AbstractRequest
@@ -92,17 +93,17 @@ class SubscriptionRequest extends AbstractRequest
     {
         return $this->set('billing', $billing);
     }
-    
+
     public function getMerchantAccountId()
     {
         return $this->get('merchantAccountId');
     }
-    
+
     public function merchantAccountId($merchantAccountId)
     {
         return $this->set('merchantAccountId', $merchantAccountId);
     }
-    
+
     public function getMetadata()
     {
         return $this->get('metadata');

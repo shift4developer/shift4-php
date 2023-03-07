@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Response;
 
 class Customer extends AbstractResponse
@@ -57,7 +58,7 @@ class Customer extends AbstractResponse
      */
     public function getDefaultCard()
     {
-		foreach ($this->getCards() as $card) {
+        foreach ($this->getCards() as $card) {
             if ($card->getId() == $this->getDefaultCardId()) {
                 return $card;
             }

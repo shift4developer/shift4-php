@@ -1,4 +1,5 @@
 <?php
+
 namespace Shift4\Request;
 
 class CreditRequest extends AbstractRequest
@@ -18,66 +19,66 @@ class CreditRequest extends AbstractRequest
     {
         return $this->get('currency');
     }
-    
+
     public function currency($currency)
     {
         return $this->set('currency', $currency);
     }
-    
+
     public function getCustomerId()
     {
         return $this->get('customerId');
     }
-    
+
     public function customerId($customerId)
     {
         return $this->set('customerId', $customerId);
     }
-    
+
     /**
      * @return \Shift4\Request\CardRequest
      */
     public function getCard()
     {
         $card = $this->get('card');
-        
+
         if (is_array($card)) {
             return $this->getObject('card', '\Shift4\Request\CardRequest');
         } else {
             return $card;
         }
     }
-    
+
     public function card($card)
     {
         return $this->set('card', $card);
     }
-    
+
     public function getDescription()
     {
         return $this->get('description');
     }
-    
+
     public function description($description)
     {
         return $this->set('description', $description);
     }
-    
+
     public function getMerchantAccountId()
     {
         return $this->get('merchantAccountId');
     }
-    
+
     public function merchantAccountId($merchantAccountId)
     {
         return $this->set('merchantAccountId', $merchantAccountId);
     }
-    
+
     public function getMetadata()
     {
         return $this->get('metadata');
     }
-    
+
     public function metadata($metadata)
     {
         return $this->set('metadata', $metadata);
