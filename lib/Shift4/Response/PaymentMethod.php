@@ -60,4 +60,12 @@ class PaymentMethod extends AbstractResponse
     {
         return $this->getObject('fraudCheckData', '\Shift4\Response\FraudCheckData');
     }
+
+    /**
+     * @return \Shift4\Response\PaymentMethodApplePay
+     */
+    public function getApplePay()
+    {
+        return $this->getObject('applePay', '\Shift4\Response\PaymentMethodApplePay');
+    }
 }

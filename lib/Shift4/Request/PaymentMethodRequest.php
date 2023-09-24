@@ -43,8 +43,28 @@ class PaymentMethodRequest extends AbstractRequest
         return $this->getObject('billing', '\Shift4\Request\BillingRequest');
     }
 
+
+    /**
+     * @param \Shift4\Request\BillingRequest $billing
+     */
     public function billing($billing)
     {
         return $this->set('billing', $billing);
+    }
+
+    /**
+     * @return \Shift4\Request\PaymentMethodRequestApplePay
+     */
+    public function getApplePay()
+    {
+        return $this->getObject('applePay', '\Shift4\Request\PaymentMethodRequestApplePay');
+    }
+
+    /**
+     * @param \Shift4\Request\PaymentMethodRequestApplePay $applePay
+     */
+    public function applePay($applePay)
+    {
+        return $this->set('applePay', $applePay);
     }
 }
