@@ -9,7 +9,7 @@ use Shift4\Util\ObjectSerializer;
 
 class Shift4Gateway
 {
-    const VERSION = '2.0.0';
+    const VERSION = '2.1.0';
     const DEFAULT_ENDPOINT = 'https://api.shift4.com';
     const DEFAULT_UPLOADS_ENDPOINT = "https://uploads.api.shift4.com/";
 
@@ -191,6 +191,15 @@ class Shift4Gateway
     public function retrievePaymentMethod($paymentMethodId)
     {
         return $this->get("/payment-methods/{$paymentMethodId}", '\Shift4\Response\PaymentMethod');
+    }
+
+    /**
+     * @param \Shift4\Request\PaymentMethodRequest $request
+     * @return \Shift4\Response\PaymentMethod
+     */
+    public function createPaymentMethod($request)
+    {
+        return $this->post("/payment-methods", $request, '\Shift4\Response\PaymentMethod');
     }
 
     /**
