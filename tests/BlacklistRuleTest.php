@@ -5,7 +5,7 @@ use Shift4\Request\BlacklistRuleRequest;
 use Shift4\Request\BlacklistRuleListRequest;
 use Shift4\Request\CreatedFilter;
 
-class BlacklistRuleTest extends AbstractGatewayTest
+class BlacklistRuleTest extends AbstractGatewayTestBase
 {
 
     public function testCreateBlacklistRule()

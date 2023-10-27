@@ -4,7 +4,7 @@ require_once 'bootstrap.php';
 use Shift4\Request\CreatedFilter;
 use Shift4\Request\FraudWarningListRequest;
 
-class FraudWarningTest extends AbstractGatewayTest
+class FraudWarningTest extends AbstractGatewayTestBase
 {
 
     public function testRetrieveFraudWarning()

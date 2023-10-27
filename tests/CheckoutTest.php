@@ -6,7 +6,7 @@ use Shift4\Request\CheckoutRequestCharge;
 use Shift4\Request\CheckoutRequestCustomCharge;
 use Shift4\Request\CheckoutRequestCustomAmount;
 
-class CheckoutTest extends AbstractGatewayTest
+class CheckoutTest extends AbstractGatewayTestBase
 {
 
     public function testSignCheckoutRequestWithCharge()

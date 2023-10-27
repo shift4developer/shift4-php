@@ -4,7 +4,7 @@ require_once 'bootstrap.php';
 use Shift4\Request\EventListRequest;
 use Shift4\Request\CreatedFilter;
 
-class EventTest extends AbstractGatewayTest
+class EventTest extends AbstractGatewayTestBase
 {
 
     public function testRetrieveEvent() 

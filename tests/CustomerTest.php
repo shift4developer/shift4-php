@@ -5,7 +5,7 @@ use Shift4\Request\CustomerUpdateRequest;
 use Shift4\Request\CustomerListRequest;
 use Shift4\Request\CreatedFilter;
 
-class CustomerTest extends AbstractGatewayTest
+class CustomerTest extends AbstractGatewayTestBase
 {
 
     public function testCreateCustomer()

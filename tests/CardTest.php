@@ -5,7 +5,7 @@ use Shift4\Request\CardUpdateRequest;
 use Shift4\Request\CardListRequest;
 use Shift4\Request\CreatedFilter;
 
-class CardTest extends AbstractGatewayTest
+class CardTest extends AbstractGatewayTestBase
 {
 
     public function testCreateCard()

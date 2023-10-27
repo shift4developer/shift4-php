@@ -4,7 +4,7 @@ require_once 'bootstrap.php';
 use Shift4\Request\FileUploadListRequest;
 use Shift4\Request\CreatedFilter;
 
-class FileUploadTest extends AbstractGatewayTest
+class FileUploadTest extends AbstractGatewayTestBase
 {
 
     public function testCreateFileUpload()

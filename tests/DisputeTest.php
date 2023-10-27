@@ -5,7 +5,7 @@ use Shift4\Request\DisputeListRequest;
 use Shift4\Request\CreatedFilter;
 use Shift4\Request\DisputeUpdateRequest;
 
-class DisputeTest extends AbstractGatewayTest
+class DisputeTest extends AbstractGatewayTestBase
 {
 
     public function testRetrieveDispute()

@@ -7,7 +7,7 @@ use Shift4\Request\ChargeUpdateRequest;
 use Shift4\Request\ChargeListRequest;
 use Shift4\Request\CreatedFilter;
 
-class ChargeTest extends AbstractGatewayTest
+class ChargeTest extends AbstractGatewayTestBase
 {
 
     public function testCreateCharge()

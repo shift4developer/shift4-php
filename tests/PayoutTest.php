@@ -6,7 +6,7 @@ use Shift4\Request\PayoutListRequest;
 use Shift4\Request\PayoutTransactionListRequest;
 use Shift4\Request\CreatedFilter;
 
-class PayoutTest extends AbstractGatewayTest
+class PayoutTest extends AbstractGatewayTestBase
 {
     
     public function testCreatePayout() {

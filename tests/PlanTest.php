@@ -5,7 +5,7 @@ use Shift4\Request\PlanUpdateRequest;
 use Shift4\Request\PlanListRequest;
 use Shift4\Request\CreatedFilter;
 
-class PlanTest extends AbstractGatewayTest
+class PlanTest extends AbstractGatewayTestBase
 {
 
     public function testCreatePlan()

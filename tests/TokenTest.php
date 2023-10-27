@@ -4,7 +4,7 @@ require_once 'bootstrap.php';
 use Shift4\Request\EventListRequest;
 use Shift4\Request\CreatedFilter;
 
-class TokenTest extends AbstractGatewayTest
+class TokenTest extends AbstractGatewayTestBase
 {
 
     public function testCreateToken()

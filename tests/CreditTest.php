@@ -5,7 +5,7 @@ use Shift4\Request\CreditUpdateRequest;
 use Shift4\Request\CreditListRequest;
 use Shift4\Request\CreatedFilter;
 
-class CreditTest extends AbstractGatewayTest
+class CreditTest extends AbstractGatewayTestBase
 {
 
     public function testCreateCredit()

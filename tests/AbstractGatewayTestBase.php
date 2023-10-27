@@ -6,7 +6,7 @@ use Shift4\Connection\Connection;;
 use Shift4\Connection\CurlConnection;
 use Shift4\Request\ChargeRequest;
 
-abstract class AbstractGatewayTest extends \PHPUnit\Framework\TestCase
+abstract class AbstractGatewayTestBase extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Connection
@@ -22,7 +22,7 @@ abstract class AbstractGatewayTest extends \PHPUnit\Framework\TestCase
     {
         $this->connection = new CurlConnection(array(CURLOPT_SSL_VERIFYPEER => false));
 
-        $this->gateway = new Shift4Gateway(PRIVATE_KEY);
+        $this->gateway = new Shift4Gateway(SECRET_KEY);
         $this->gateway->setEndpoint(GATEWAY_URL);
         $this->gateway->setUploadsEndpoint(UPLOADS_URL);
         $this->gateway->setConnection($this->connection);

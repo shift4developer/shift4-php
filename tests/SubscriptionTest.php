@@ -6,7 +6,7 @@ use Shift4\Request\SubscriptionCancelRequest;
 use Shift4\Request\SubscriptionListRequest;
 use Shift4\Request\CreatedFilter;
 
-class SubscriptionTest extends AbstractGatewayTest
+class SubscriptionTest extends AbstractGatewayTestBase
 {
 
     public function testCreateSubscription()

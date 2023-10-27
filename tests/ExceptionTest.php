@@ -4,7 +4,7 @@ require_once 'bootstrap.php';
 use Shift4\Request\BlacklistRuleRequest;
 use Shift4\Request\CustomerRequest;
 
-class ExceptionTest extends AbstractGatewayTest
+class ExceptionTest extends AbstractGatewayTestBase
 {
 
     public function testFailedCharge()

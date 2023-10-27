@@ -5,7 +5,7 @@ use Shift4\Request\RefundRequest;
 use Shift4\Request\RefundListRequest;
 use Shift4\Request\CreatedFilter;
 
-class RefundTest extends AbstractGatewayTest
+class RefundTest extends AbstractGatewayTestBase
 {
     
     public function testCreateRefund() {
