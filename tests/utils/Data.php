@@ -234,7 +234,7 @@ class Data
     
     public static function imageFile()
     {
-        return __DIR__ . "/files/cucumbers.jpg";
+        return __DIR__ . "/files/shift4.jpg";
     }
     
     public static function shippingRequest() {

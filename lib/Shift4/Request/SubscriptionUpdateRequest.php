@@ -94,11 +94,6 @@ class SubscriptionUpdateRequest extends AbstractRequest
         return $this->set('currentPeriodEnd', $periodEnd);
     }
 
-    public function currentPeriodEndNow()
-    {
-        return $this->set('currentPeriodEnd', 'now');
-    }
-
     /**
      * @return \Shift4\Request\ShippingRequest
      */
