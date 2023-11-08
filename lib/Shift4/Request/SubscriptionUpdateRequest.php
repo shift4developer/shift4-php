@@ -68,22 +68,6 @@ class SubscriptionUpdateRequest extends AbstractRequest
         return $this->set('captureCharges', $captureCharges);
     }
 
-    /**
-     * @deprecated For backward compatibility only. Use "getCurrentPeriodEnd()".
-     */
-    public function getTrialEnd()
-    {
-        return $this->get('trialEnd');
-    }
-
-    /**
-     * @deprecated For backward compatibility only. Use "currentPeriodEnd($periodEnd)" or "currentPeriodEndNow()".
-     */
-    public function trialEnd($trialEnd)
-    {
-        return $this->set('trialEnd', $trialEnd);
-    }
-
     public function getCurrentPeriodEnd()
     {
         return $this->get('currentPeriodEnd');

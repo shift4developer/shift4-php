@@ -44,8 +44,6 @@ class Event extends AbstractResponse
                 return new Plan($data);
             case 'subscription':
                 return new Subscription($data);
-            case 'crossSaleOffer':
-                return new CrossSaleOffer($data);
             default:
                 return $data;
         }

@@ -69,7 +69,7 @@ class SubscriptionTest extends AbstractGatewayTestBase
         $request->card($updateRequest->getCard());
         $request->quantity($updateRequest->getQuantity());
         $request->captureCharges($updateRequest->getCaptureCharges());
-        $request->trialEnd($updateRequest->getTrialEnd());
+        $request->trialEnd($updateRequest->getCurrentPeriodEnd());
         $request->metadata($updateRequest->getMetadata());
         
         Assert::assertSubscription($request, $subscription);
