@@ -1,0 +1,19 @@
+name: Build and validate
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: PHP Composer
+        uses: php-actions/composer@v6
+      - name: Tests
+        uses: php-actions/phpunit@v3
+        with:
+          args: tests
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          PUBLIC_KEY: ${{ secrets.PUBLIC_KEY }}
