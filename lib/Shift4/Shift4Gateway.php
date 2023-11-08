@@ -9,7 +9,7 @@ use Shift4\Util\ObjectSerializer;
 
 class Shift4Gateway
 {
-    const VERSION = '2.2.0';
+    const VERSION = '3.0.0';
     const DEFAULT_ENDPOINT = 'https://api.shift4.com';
     const DEFAULT_UPLOADS_ENDPOINT = "https://uploads.api.shift4.com/";
 
@@ -381,51 +381,6 @@ class Shift4Gateway
     public function listBlacklistRules($request = null)
     {
         return $this->getList('/blacklist', $request, '\Shift4\Response\BlacklistRule');
-    }
-
-    /**
-     * @param \Shift4\Request\CrossSaleOfferRequest $request
-     * @return \Shift4\Response\CrossSaleOffer
-     */
-    public function createCrossSaleOffer($request)
-    {
-        return $this->post('/cross-sale-offers', $request, '\Shift4\Response\CrossSaleOffer');
-    }
-
-    /**
-     * @param string $blacklistRuleId
-     * @return \Shift4\Response\CrossSaleOffer
-     */
-    public function retrieveCrossSaleOffer($crossSaleOfferId)
-    {
-        return $this->get("/cross-sale-offers/{$crossSaleOfferId}", '\Shift4\Response\CrossSaleOffer');
-    }
-
-    /**
-     * @param \Shift4\Request\CrossSaleOfferUpdateRequest $request
-     * @return \Shift4\Response\CrossSaleOffer
-     */
-    public function updateCrossSaleOffer($request)
-    {
-        return $this->post('/cross-sale-offers/{crossSaleOfferId}', $request, '\Shift4\Response\CrossSaleOffer');
-    }
-
-    /**
-     * @param string $crossSaleOfferId
-     * @return \Shift4\Response\DeleteResponse
-     */
-    public function deleteCrossSaleOffer($crossSaleOfferId)
-    {
-        return $this->delete("/cross-sale-offers/{$crossSaleOfferId}", null, '\Shift4\Response\DeleteResponse');
-    }
-
-    /**
-     * @param \Shift4\Request\CrossSaleOfferListRequest $request
-     * @return \Shift4\Response\ListResponse
-     */
-    public function listCrossSaleOffers($request)
-    {
-        return $this->getList('/cross-sale-offers', $request, '\Shift4\Response\CrossSaleOffer');
     }
 
     /**

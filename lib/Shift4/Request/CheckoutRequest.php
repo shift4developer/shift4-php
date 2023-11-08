@@ -54,16 +54,6 @@ class CheckoutRequest extends AbstractRequest
         return $this->set('customerId', $customerId);
     }
 
-    public function getCrossSaleOfferIds()
-    {
-        return $this->get('crossSaleOfferIds');
-    }
-
-    public function crossSaleOfferIds($crossSaleOfferIds)
-    {
-        return $this->set('crossSaleOfferIds', $crossSaleOfferIds);
-    }
-
     public function getRememberMe()
     {
         return $this->get('rememberMe');

@@ -119,14 +119,6 @@ class Subscription extends AbstractResponse
         return $this->getObject('threeDSecureInfo', '\Shift4\Response\ThreeDSecureInfo');
     }
 
-    /**
-     * @return \Shift4\Response\ChargeFromCrossSale
-     */
-    public function getFromCrossSale()
-    {
-        return $this->getObject('fromCrossSale', '\Shift4\Response\ChargeFromCrossSale');
-    }
-
     public function getMerchantAccountId()
     {
         return $this->get('merchantAccountId');

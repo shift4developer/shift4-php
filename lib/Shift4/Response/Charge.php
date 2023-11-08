@@ -140,22 +140,6 @@ class Charge extends AbstractResponse
     }
 
     /**
-     * @return \Shift4\Response\ChargeFromCrossSale
-     */
-    public function getFromCrossSale()
-    {
-        return $this->getObject('fromCrossSale', '\Shift4\Response\ChargeFromCrossSale');
-    }
-
-    /**
-     * @return \Shift4\Response\ChargeWithCrossSale[]
-     */
-    public function getWithCrossSales()
-    {
-        return $this->getObjectsList('withCrossSales', '\Shift4\Response\ChargeWithCrossSale');
-    }
-
-    /**
      * @return \Shift4\Response\Dispute
      */
     public function getDispute()
