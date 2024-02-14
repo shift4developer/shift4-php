@@ -73,7 +73,7 @@ class ObjectSerializer
         $request = $this->normalizeRequest($request);
         $request = $this->handlePathVariables($request, $path);
 
-        return '?' . http_build_query($this->transformForQueryString($request), null, '&');
+        return '?' . http_build_query($this->transformForQueryString($request), '', '&');
     }
 
     private function transformForQueryString($array)
