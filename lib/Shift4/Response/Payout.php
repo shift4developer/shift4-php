@@ -39,4 +39,9 @@ class Payout extends AbstractResponse
     {
         return $this->get('periodEnd');
     }
+
+    public function getMerchantAccountId()
+    {
+        return $this->get('merchantAccountId');
+    }
 }
