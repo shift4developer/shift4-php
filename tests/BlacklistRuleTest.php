@@ -1,14 +1,14 @@
 <?php
 require_once 'bootstrap.php';
 
-use Shift4\Request\BlacklistRuleRequest;
 use Shift4\Request\BlacklistRuleListRequest;
 use Shift4\Request\CreatedFilter;
+use Shift4\Util\RequestOptions;
 
 class BlacklistRuleTest extends AbstractGatewayTestBase
 {
 
-    public function testCreateBlacklistRule()
+    function testCreateBlacklistRule()
     {
         // given
         $request = Data::blacklistRuleFingerprintRequest();
@@ -20,7 +20,7 @@ class BlacklistRuleTest extends AbstractGatewayTestBase
         Assert::assertBlacklistRule($request, $blacklistRule);
     }
 
-    public function testRetrieveBlacklistRule() {
+    function testRetrieveBlacklistRule() {
         // given
         $request = Data::blacklistRuleFingerprintRequest();
         $blacklistRule = $this->gateway->createBlacklistRule($request);
@@ -32,7 +32,7 @@ class BlacklistRuleTest extends AbstractGatewayTestBase
         Assert::assertBlacklistRule($request, $blacklistRule);
     }
     
-    public function testDeleteBlacklistRule() {
+    function testDeleteBlacklistRule() {
         // given
         $blacklistRule = $this->gateway->createBlacklistRule(Data::blacklistRuleFingerprintRequest());
     
@@ -44,7 +44,7 @@ class BlacklistRuleTest extends AbstractGatewayTestBase
         Assert::assertTrue($blacklistRule->getDeleted());
     }
     
-    public function testListBlacklistRules() {
+    function testListBlacklistRules() {
         // given
         $rule = $this->gateway->createBlacklistRule(Data::blacklistRuleFingerprintRequest());
         $this->gateway->createBlacklistRule(Data::blacklistRuleFingerprintRequest());
@@ -64,5 +64,39 @@ class BlacklistRuleTest extends AbstractGatewayTestBase
         foreach ($list->getList() as $rule) {
             self::assertNotNull($rule->getId());
         }
+    }
+
+    function testWillNotCreateDuplicateIfSameIdempotencyKeyIsUsed()
+    {
+        // given
+        $request = Data::blacklistRuleFingerprintRequest();
+        $requestOptions = new RequestOptions();
+        $requestOptions->idempotencyKey(uniqid());
+
+        // when
+        $first_call_response = $this->gateway->createBlacklistRule($request, $requestOptions);
+        $second_call_response = $this->gateway->createBlacklistRule($request, $requestOptions);
+
+        // then
+        Assert::assertEquals($first_call_response->getId(), $second_call_response->getId());
+    }
+
+    function testWillThrowExceptionIfSameIdempotencyKeyIsUsedForTwoDifferentCreateRequests()
+    {
+        // given
+        $request = Data::blacklistRuleFingerprintRequest();
+        $requestOptions = new RequestOptions();
+        $requestOptions->idempotencyKey(uniqid());
+
+        // when
+        $this->gateway->createBlacklistRule($request, $requestOptions);
+        $request->email("other@email.com");
+
+        $exception = Assert::catchShift4Exception(function () use ($request, $requestOptions) {
+            $this->gateway->createBlacklistRule($request, $requestOptions);
+        });
+
+        // then
+        Assert::assertSame('Idempotent key used for request with different parameters.', $exception->getMessage());
     }
 }

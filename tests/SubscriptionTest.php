@@ -5,11 +5,11 @@ use Shift4\Request\SubscriptionUpdateRequest;
 use Shift4\Request\SubscriptionCancelRequest;
 use Shift4\Request\SubscriptionListRequest;
 use Shift4\Request\CreatedFilter;
+use Shift4\Util\RequestOptions;
 
 class SubscriptionTest extends AbstractGatewayTestBase
 {
-
-    public function testCreateSubscription()
+    function testCreateSubscription()
     {
         // given
         $customer = $this->gateway->createCustomer(Data::customerRequest());
@@ -24,7 +24,7 @@ class SubscriptionTest extends AbstractGatewayTestBase
         Assert::assertSubscription($request, $subscription);
     }
     
-    public function testRetrieveSubscription()
+    function testRetrieveSubscription()
     {
         // given
         $customer = $this->gateway->createCustomer(Data::customerRequest());
@@ -40,7 +40,7 @@ class SubscriptionTest extends AbstractGatewayTestBase
         Assert::assertSubscription($request, $subscription);
     }
     
-    public function testUpdateSubscription()
+    function testUpdateSubscription()
     {
         // given
         $customer = $this->gateway->createCustomer(Data::customerWithCardRequest());
@@ -75,7 +75,7 @@ class SubscriptionTest extends AbstractGatewayTestBase
         Assert::assertSubscription($request, $subscription);
     }
 
-    public function testCancelSubscription()
+    function testCancelSubscription()
     {
         // given
         $customer = $this->gateway->createCustomer(Data::customerWithCardRequest());
@@ -95,7 +95,7 @@ class SubscriptionTest extends AbstractGatewayTestBase
         Assert::assertTrue($subscription->getDeleted());
     }
     
-    public function testListSubscriptions()
+    function testListSubscriptions()
     {
         // given
         $customer = $this->gateway->createCustomer(Data::customerWithCardRequest());
@@ -124,7 +124,7 @@ class SubscriptionTest extends AbstractGatewayTestBase
         }
     }
     
-    public function testCreateSubscriptionWithAddress()
+    function testCreateSubscriptionWithAddress()
     {
         // given
         $customer = $this->gateway->createCustomer(Data::customerRequest());
@@ -142,7 +142,7 @@ class SubscriptionTest extends AbstractGatewayTestBase
         Assert::assertSubscription($request, $subscription);
     }
     
-    public function testUpdateSubscriptionWithAddress()
+    function testUpdateSubscriptionWithAddress()
     {
         // given
         $customer = $this->gateway->createCustomer(Data::customerWithCardRequest());
@@ -165,5 +165,110 @@ class SubscriptionTest extends AbstractGatewayTestBase
         $request->billing($updateRequest->getBilling());
     
         Assert::assertSubscription($request, $subscription);
+    }
+
+
+    function testWillNotCreateDuplicateIfSameIdempotencyKeyIsUsed()
+    {
+        // given
+        $customer = $this->gateway->createCustomer(Data::customerRequest());
+        $plan = $this->gateway->createPlan(Data::planRequest());
+
+        $request = Data::subscriptionRequest($customer, $plan)->card(Data::cardRequest());
+        $requestOptions = new RequestOptions();
+        $requestOptions->idempotencyKey(uniqid());
+
+        // when
+        $first_call_response = $this->gateway->createSubscription($request, $requestOptions);
+        $second_call_response = $this->gateway->createSubscription($request, $requestOptions);
+
+        // then
+        Assert::assertEquals($first_call_response->getId(), $second_call_response->getId());
+    }
+
+    function testWillCreateTwoInstancesIfDifferentIdempotencyKeysAreUsed()
+    {
+        // given
+        $customer = $this->gateway->createCustomer(Data::customerRequest());
+        $plan = $this->gateway->createPlan(Data::planRequest());
+
+        $request = Data::subscriptionRequest($customer, $plan)->card(Data::cardRequest());
+        $requestOptions = new RequestOptions();
+        $requestOptions->idempotencyKey(uniqid());
+        $otherRequestOptions = new RequestOptions();
+        $otherRequestOptions->idempotencyKey(uniqid());
+
+        // when
+        $first_call_response = $this->gateway->createSubscription($request, $requestOptions);
+        $second_call_response = $this->gateway->createSubscription($request, $otherRequestOptions);
+
+        // then
+        Assert::assertNotEquals($first_call_response->getId(), $second_call_response->getId());
+    }
+
+    function testWillCreateTwoInstancesIfNoIdempotencyKeysAreUsed()
+    {
+        // given
+        $customer = $this->gateway->createCustomer(Data::customerRequest());
+        $plan = $this->gateway->createPlan(Data::planRequest());
+
+        $request = Data::subscriptionRequest($customer, $plan)->card(Data::cardRequest());
+
+        // when
+        $first_call_response = $this->gateway->createSubscription($request);
+        $second_call_response = $this->gateway->createSubscription($request);
+
+        // then
+        Assert::assertNotEquals($first_call_response->getId(), $second_call_response->getId());
+    }
+
+    function testWillThrowExceptionIfSameIdempotencyKeyIsUsedForTwoDifferentCreateRequests()
+    {
+        // given
+        $customer = $this->gateway->createCustomer(Data::customerRequest());
+        $plan = $this->gateway->createPlan(Data::planRequest());
+
+        $request = Data::subscriptionRequest($customer, $plan)->card(Data::cardRequest());
+        $requestOptions = new RequestOptions();
+        $requestOptions->idempotencyKey(uniqid());
+
+        // when
+        $this->gateway->createSubscription($request, $requestOptions);
+        $request->planId(42);
+
+        $exception = Assert::catchShift4Exception(function () use ($request, $requestOptions) {
+            $this->gateway->createSubscription($request, $requestOptions);
+        });
+
+        // then
+        Assert::assertSame('Idempotent key used for request with different parameters.', $exception->getMessage());
+    }
+
+    function testWillThrowExceptionIfSameIdempotencyKeyIsUsedForTwoDifferentUpdateRequests() {
+        // given
+        $customer = $this->gateway->createCustomer(Data::customerRequest());
+        $plan = $this->gateway->createPlan(Data::planRequest());
+
+        $request = Data::subscriptionRequest($customer, $plan)->card(Data::cardRequest());
+        $subscription = $this->gateway->createSubscription($request);
+
+        $updateRequest = (new SubscriptionUpdateRequest())
+            ->customerId($subscription->getCustomerId())
+            ->subscriptionId($subscription->getId())
+            ->shipping(Data::shippingRequest())
+            ->billing(Data::billingRequest());
+
+        $requestOptions = new RequestOptions();
+        $requestOptions->idempotencyKey(uniqid());
+        $this->gateway->updateSubscription($updateRequest, $requestOptions);
+        $updateRequest->planId(42);
+
+        // when
+        $exception = Assert::catchShift4Exception(function () use ($updateRequest, $requestOptions) {
+            $this->gateway->updateSubscription($updateRequest, $requestOptions);
+        });
+
+        // then
+        Assert::assertSame('Idempotent key used for request with different parameters.', $exception->getMessage());
     }
 }

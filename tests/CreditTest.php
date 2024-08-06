@@ -4,11 +4,12 @@ require_once 'bootstrap.php';
 use Shift4\Request\CreditUpdateRequest;
 use Shift4\Request\CreditListRequest;
 use Shift4\Request\CreatedFilter;
+use Shift4\Util\RequestOptions;
 
 class CreditTest extends AbstractGatewayTestBase
 {
 
-    public function testCreateCredit()
+    function testCreateCredit()
     {
         // given
         $request = Data::creditRequest();
@@ -20,7 +21,7 @@ class CreditTest extends AbstractGatewayTestBase
         Assert::assertCredit($request, $credit);
     }
 
-    public function testRetrieveCredit()
+    function testRetrieveCredit()
     {
         // given
         $request = Data::creditRequest();
@@ -33,7 +34,7 @@ class CreditTest extends AbstractGatewayTestBase
         Assert::assertCredit($request, $credit);
     }
      
-    public function testUpdateCredit()
+    function testUpdateCredit()
     {
         // given
         $customer = $this->gateway->createCustomer(Data::customerRequest());
@@ -59,7 +60,7 @@ class CreditTest extends AbstractGatewayTestBase
         Assert::assertCredit($expected, $credit);
     }
     
-    public function testListCredit()
+    function testListCredit()
     {
         // given
         $customer = $this->gateway->createCustomer(Data::customerRequest());
@@ -86,7 +87,7 @@ class CreditTest extends AbstractGatewayTestBase
         }
     }
     
-    public function testCreditRequestViaArray()
+    function testCreditRequestViaArray()
     {
         // given
         $request = array(
@@ -121,5 +122,72 @@ class CreditTest extends AbstractGatewayTestBase
         self::assertMatchesRegularExpression('/\w+/', $credit['card']['brand']);
         self::assertEquals($request['card']['expMonth'], $credit['card']['expMonth']);
         self::assertEquals($request['card']['expYear'], $credit['card']['expYear']);
+    }
+
+    function testWillNotCreateDuplicateIfSameIdempotencyKeyIsUsed()
+    {
+        // given
+        $request = Data::creditRequest();
+        $requestOptions = new RequestOptions();
+        $requestOptions->idempotencyKey(uniqid());
+
+        // when
+        $first_call_response = $this->gateway->createCredit($request, $requestOptions);
+        $second_call_response = $this->gateway->createCredit($request, $requestOptions);
+
+        // then
+        Assert::assertEquals($first_call_response->getId(), $second_call_response->getId());
+    }
+
+    function testWillCreateTwoInstancesIfDifferentIdempotencyKeysAreUsed()
+    {
+        // given
+        $request = Data::creditRequest();
+        $requestOptions = new RequestOptions();
+        $requestOptions->idempotencyKey(uniqid());
+        $otherRequestOptions = new RequestOptions();
+        $otherRequestOptions->idempotencyKey(uniqid());
+
+        // when
+        $first_call_response = $this->gateway->createCredit($request, $requestOptions);
+        $second_call_response = $this->gateway->createCredit($request, $otherRequestOptions);
+
+        // then
+        Assert::assertNotEquals($first_call_response->getId(), $second_call_response->getId());
+    }
+
+    function testWillCreateTwoInstancesIfNoIdempotencyKeysAreUsed()
+    {
+        // given
+        $request = Data::creditRequest();
+
+        // when
+        $first_call_response = $this->gateway->createCredit($request);
+        $second_call_response = $this->gateway->createCredit($request);
+
+        // then
+        Assert::assertNotEquals($first_call_response->getId(), $second_call_response->getId());
+    }
+
+    function testWillThrowExceptionIfSameIdempotencyKeyIsUsedForTwoDifferentUpdateRequests() {
+        // given
+        $request = Data::creditRequest();
+        $requestOptions = new RequestOptions();
+        $requestOptions->idempotencyKey(uniqid());
+        $credit = $this->gateway->createCredit($request);
+
+        $updateRequest = (new CreditUpdateRequest())
+            ->creditId($credit->getId())
+            ->description('updated-description');
+
+        // when
+        $this->gateway->updateCredit($updateRequest, $requestOptions);
+        $updateRequest->description('different-description');
+        $exception = Assert::catchShift4Exception(function () use ($updateRequest, $requestOptions) {
+            $this->gateway->updateCredit($updateRequest, $requestOptions);
+        });
+
+        // then
+        Assert::assertSame('Idempotent key used for request with different parameters.', $exception->getMessage());
     }
 }

@@ -7,7 +7,7 @@ use Shift4\Request\CreatedFilter;
 class TokenTest extends AbstractGatewayTestBase
 {
 
-    public function testCreateToken()
+    function testCreateToken()
     {
         // given
         $request = Data::tokenRequest();
@@ -19,7 +19,7 @@ class TokenTest extends AbstractGatewayTestBase
         Assert::assertToken($request, $token);
     }
     
-    public function testRetrieveToken() 
+    function testRetrieveToken() 
     {
         // given
         $request = Data::tokenRequest();

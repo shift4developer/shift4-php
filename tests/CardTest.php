@@ -4,11 +4,12 @@ require_once 'bootstrap.php';
 use Shift4\Request\CardUpdateRequest;
 use Shift4\Request\CardListRequest;
 use Shift4\Request\CreatedFilter;
+use Shift4\Util\RequestOptions;
 
 class CardTest extends AbstractGatewayTestBase
 {
 
-    public function testCreateCard()
+    function testCreateCard()
     {
         // given
         $customer = $this->gateway->createCustomer(Data::customerRequest());
@@ -22,7 +23,7 @@ class CardTest extends AbstractGatewayTestBase
         Assert::assertCard($request, $card);
     }
     
-    public function testRetrieveCustomer() {
+    function testRetrieveCustomer() {
         // given
         $customer = $this->gateway->createCustomer(Data::customerRequest());
         
@@ -36,7 +37,7 @@ class CardTest extends AbstractGatewayTestBase
         Assert::assertCard($request, $card);
     }
     
-    public function testUpdateCard() {
+    function testUpdateCard() {
         // given
         $customer = $this->gateway->createCustomer(Data::customerRequest());
         
@@ -75,7 +76,7 @@ class CardTest extends AbstractGatewayTestBase
         Assert::assertNotNull($card->getFastCredit()->getUpdated());
     }
     
-    public function testDeleteCard() {
+    function testDeleteCard() {
         // given
         $customer = $this->gateway->createCustomer(Data::customerRequest());
         $card = $this->gateway->createCard(Data::cardRequest()->customerId($customer->getId()));
@@ -88,7 +89,7 @@ class CardTest extends AbstractGatewayTestBase
         Assert::assertTrue($card->getDeleted());
     }
     
-    public function testListCards() {
+    function testListCards() {
         // given
         $customer = $this->gateway->createCustomer(Data::customerRequest());
 
@@ -113,5 +114,98 @@ class CardTest extends AbstractGatewayTestBase
         foreach ($list->getList() as $card) {
             Assert::assertCard($request, $card);
         }
+    }
+
+    function testWillNotCreateDuplicateIfSameIdempotencyKeyIsUsed()
+    {
+        // given
+        $customer = $this->gateway->createCustomer(Data::customerRequest());
+        $request = Data::cardRequest()->customerId($customer->getId());
+        $requestOptions = new RequestOptions();
+        $requestOptions->idempotencyKey(uniqid());
+
+        // when
+        $first_call_response = $this->gateway->createCard($request, $requestOptions);
+        $second_call_response = $this->gateway->createCard($request, $requestOptions);
+
+        // then
+        Assert::assertEquals($first_call_response->getId(), $second_call_response->getId());
+    }
+
+    function testWillCreateTwoInstancesIfDifferentIdempotencyKeysAreUsed()
+    {
+        // given
+        $customer = $this->gateway->createCustomer(Data::customerRequest());
+        $request = Data::cardRequest()->customerId($customer->getId());
+        $requestOptions = new RequestOptions();
+        $requestOptions->idempotencyKey(uniqid());
+        $otherRequestOptions = new RequestOptions();
+        $otherRequestOptions->idempotencyKey(uniqid());
+
+        // when
+        $first_call_response = $this->gateway->createCard($request, $requestOptions);
+        $second_call_response = $this->gateway->createCard($request, $otherRequestOptions);
+
+        // then
+        Assert::assertNotEquals($first_call_response->getId(), $second_call_response->getId());
+    }
+
+    function testWillCreateTwoInstancesIfNoIdempotencyKeysAreUsed()
+    {
+        // given
+        $customer = $this->gateway->createCustomer(Data::customerRequest());
+        $request = Data::cardRequest()->customerId($customer->getId());
+
+        // when
+        $first_call_response = $this->gateway->createCard($request);
+        $second_call_response = $this->gateway->createCard($request);
+
+        // then
+        Assert::assertNotEquals($first_call_response->getId(), $second_call_response->getId());
+    }
+
+    function testWillThrowExceptionIfSameIdempotencyKeyIsUsedForTwoDifferentCreateRequests()
+    {
+        // given
+        $customer = $this->gateway->createCustomer(Data::customerRequest());
+        $request = Data::cardRequest()->customerId($customer->getId());
+        $requestOptions = new RequestOptions();
+        $requestOptions->idempotencyKey(uniqid());
+
+        // when
+        $this->gateway->createCard($request, $requestOptions);
+        $request->cvc("666");
+
+        $exception = Assert::catchShift4Exception(function () use ($request, $requestOptions) {
+            $this->gateway->createCard($request, $requestOptions);
+        });
+
+        // then
+        Assert::assertSame('Idempotent key used for request with different parameters.', $exception->getMessage());
+    }
+
+    function testWillThrowExceptionIfSameIdempotencyKeyIsUsedForTwoDifferentUpdateRequests() {
+        // given
+        $customer = $this->gateway->createCustomer(Data::customerRequest());
+
+        $request = Data::cardRequest("4242000000011114")->customerId($customer->getId());
+        $requestOptions = new RequestOptions();
+        $requestOptions->idempotencyKey(uniqid());
+        $card = $this->gateway->createCard($request);
+
+        $updateRequest = (new CardUpdateRequest())
+            ->customerId($card->getCustomerId())
+            ->cardId($card->getId())
+            ->checkFastCredit(true);
+
+        // when
+        $this->gateway->updateCard($updateRequest, $requestOptions);
+        $updateRequest->checkFastCredit(false);
+        $exception = Assert::catchShift4Exception(function () use ($updateRequest, $requestOptions) {
+            $this->gateway->updateCard($updateRequest, $requestOptions);
+        });
+
+        // then
+        Assert::assertSame('Idempotent key used for request with different parameters.', $exception->getMessage());
     }
 }

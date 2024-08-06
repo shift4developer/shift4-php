@@ -9,7 +9,7 @@ use Shift4\Request\CheckoutRequestCustomAmount;
 class CheckoutTest extends AbstractGatewayTestBase
 {
 
-    public function testSignCheckoutRequestWithCharge()
+    function testSignCheckoutRequestWithCharge()
     {
         // given
         $customer = $this->gateway->createCustomer(Data::customerRequest());
@@ -23,7 +23,7 @@ class CheckoutTest extends AbstractGatewayTestBase
         Assert::assertValidCheckoutRequest($signedRequest);
     }
     
-    public function testSignCheckoutRequestWithSubscription()
+    function testSignCheckoutRequestWithSubscription()
     {
         // given
         $customer = $this->gateway->createCustomer(Data::customerRequest());
@@ -38,7 +38,7 @@ class CheckoutTest extends AbstractGatewayTestBase
         Assert::assertValidCheckoutRequest($signedRequest);
     }
 
-    public function testSignCheckoutRequestWithCustomCharge()
+    function testSignCheckoutRequestWithCustomCharge()
     {
         // given
         $customer = $this->gateway->createCustomer(Data::customerRequest());

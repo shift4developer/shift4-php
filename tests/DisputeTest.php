@@ -4,11 +4,12 @@ require_once 'bootstrap.php';
 use Shift4\Request\DisputeListRequest;
 use Shift4\Request\CreatedFilter;
 use Shift4\Request\DisputeUpdateRequest;
+use Shift4\Util\RequestOptions;
 
 class DisputeTest extends AbstractGatewayTestBase
 {
 
-    public function testRetrieveDispute()
+    function testRetrieveDispute()
     {
         // given
         $dispute = $this->createDispute();
@@ -20,7 +21,7 @@ class DisputeTest extends AbstractGatewayTestBase
         Assert::assertDispute($dispute, $retrievedDispute);
     }
 
-    public function testUpdateDispute()
+    function testUpdateDispute()
     {
         // given
         $dispute = $this->createDispute();
@@ -44,7 +45,7 @@ class DisputeTest extends AbstractGatewayTestBase
         Assert::assertDisputeEvidence($updateRequest->getEvidence(), $updatedDispute->getEvidence());
     }
     
-    public function testCloseDispute() 
+    function testCloseDispute() 
     {
         // given
         $dispute = $this->createDispute();
@@ -56,7 +57,7 @@ class DisputeTest extends AbstractGatewayTestBase
         self::assertTrue($retrieveDispute->getAcceptedAsLost());
     }
 
-    public function testListDisputes()
+    function testListDisputes()
     {
         // given
         $this->createDispute();
@@ -80,20 +81,45 @@ class DisputeTest extends AbstractGatewayTestBase
         Assert::assertDispute($secondDispute, $list->getList()[0]);
         Assert::assertDispute($firstDispute, $list->getList()[1]);
     }
-    
-    /**
-     * @return \Shift4\Response\Dispute
-     */
+
     private function createDispute()
     {
         $request = Data::chargeRequest();
         $request->getCard()->number('4242000000000018');
-        
+
         $charge = $this->gateway->createCharge($request);
-        
+
         $this->waitForChargeback($charge);
-        
+
         $charge = $this->gateway->retrieveCharge($charge->getId());
         return $charge->getDispute();
+    }
+
+    function testWillThrowExceptionIfSameIdempotencyKeyIsUsedForTwoDifferentUpdateRequests() {
+        // given
+        $dispute = $this->createDispute();
+        self::assertFalse($dispute->getEvidenceDetails()->getHasEvidence());
+        self::assertEquals(0, $dispute->getEvidenceDetails()->getSubmissionCount());
+
+        $fileUpload = $this->gateway->createFileUpload(Data::imageFile(), "dispute_evidence");
+        $charge = $this->gateway->createCharge(Data::chargeRequest());
+        $otherCharge = $this->gateway->createCharge(Data::chargeRequest());
+
+        $updateRequest = (new DisputeUpdateRequest())
+            ->disputeId($dispute->getId())
+            ->evidence(Data::disputeEvidenceRequest($fileUpload, $charge));
+
+        $requestOptions = new RequestOptions();
+        $requestOptions->idempotencyKey(uniqid());
+        $this->gateway->updateDispute($updateRequest, $requestOptions);
+        $updateRequest->evidence(Data::disputeEvidenceRequest($fileUpload, $otherCharge));
+
+        // when
+        $exception = Assert::catchShift4Exception(function () use ($updateRequest, $requestOptions) {
+            $this->gateway->updateDispute($updateRequest, $requestOptions);
+        });
+
+        // then
+        Assert::assertSame('Idempotent key used for request with different parameters.', $exception->getMessage());
     }
 }
