@@ -207,7 +207,8 @@ class ChargeTest extends AbstractGatewayTestBase
         // then
         Assert::assertEquals($request->getType(), $response->getType());
         Assert::assertNotNull($response->getGooglePay());
-        Assert::assertPaymentMethod($request, $response);
+        Assert::assertNotNull($response->getPaymentMethodFlowResponse());
+        Assert::assertNotNull($response->getPaymentMethodFlowResponse()->getNextAction());
     }
 
     public function testCreateChargeForGoogle3ds()
@@ -223,6 +224,8 @@ class ChargeTest extends AbstractGatewayTestBase
         Assert::assertEquals($request->getThreeDSecure()->getAmount(), $response->getThreeDSecure()->getAmount());
         Assert::assertEquals($request->getThreeDSecure()->getCurrency(), $response->getThreeDSecure()->getCurrency());
         Assert::assertEquals($request->getSource(), $response->getSource()['id']);
+        Assert::assertNotNull($response->getPaymentMethodFlowResponse());
+        Assert::assertNotNull($response->getPaymentMethodFlowResponse()->getNextAction());
     }
 
 

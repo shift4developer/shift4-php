@@ -90,4 +90,12 @@ class PaymentMethod extends AbstractResponse
         return $this->get('source');
     }
 
+    /**
+     * @return \Shift4\Response\PaymentMethodFlowResponse
+     */
+    public function getPaymentMethodFlowResponse()
+    {
+        return $this->getObject('flow', '\Shift4\Response\PaymentMethodFlowResponse');
+    }
+
 }
