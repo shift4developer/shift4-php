@@ -68,4 +68,26 @@ class PaymentMethod extends AbstractResponse
     {
         return $this->getObject('applePay', '\Shift4\Response\PaymentMethodApplePay');
     }
+
+    /**
+     * @return \Shift4\Response\PaymentMethodGooglePay
+     */
+    public function getGooglePay()
+    {
+        return $this->getObject('googlePay', '\Shift4\Response\PaymentMethodGooglePay');
+    }
+
+    /**
+     * @return \Shift4\Response\ThreeDSecure
+     */
+    public function getThreeDSecure()
+    {
+        return $this->getObject('threeDSecure', '\Shift4\Response\ThreeDSecure');
+    }
+
+    public function getSource()
+    {
+        return $this->get('source');
+    }
+
 }
