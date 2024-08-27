@@ -7,7 +7,7 @@ use Shift4\Request\CreatedFilter;
 class EventTest extends AbstractGatewayTestBase
 {
 
-    public function testRetrieveEvent() 
+    function testRetrieveEvent() 
     {
         // given
         $chargeRequest = Data::chargeRequest();
@@ -22,7 +22,7 @@ class EventTest extends AbstractGatewayTestBase
         Assert::assertChargeSucceededEvent($chargeRequest, $event);
     }
     
-    public function testListEvents()
+    function testListEvents()
     {
         // given
         $chargeRequest = Data::chargeRequest();

@@ -1,17 +1,17 @@
 <?php
 require_once 'bootstrap.php';
 
-use Shift4\Request\PayoutRequest;
 use Shift4\Request\PayoutListRequest;
 use Shift4\Request\PayoutTransactionListRequest;
 use Shift4\Request\CreatedFilter;
+use Shift4\Util\RequestOptions;
+
 
 class PayoutTest extends AbstractGatewayTestBase
 {
-    
-    public function testCreatePayout() {
+    function testCreatePayout() {
         // given
-        $charge = $this->gateway->createCharge(Data::chargeRequest());
+        $this->gateway->createCharge(Data::chargeRequest());
 
         // when
         $payout = $this->gateway->createPayout();
@@ -20,9 +20,9 @@ class PayoutTest extends AbstractGatewayTestBase
         Assert::assertPayout($payout);
     }
 
-    public function testRetrievePayout() {
+    function testRetrievePayout() {
         // given
-        $charge = $this->gateway->createCharge(Data::chargeRequest());
+        $this->gateway->createCharge(Data::chargeRequest());
         $payout = $this->gateway->createPayout();
         
         // when
@@ -32,10 +32,10 @@ class PayoutTest extends AbstractGatewayTestBase
         Assert::assertPayout($payout);
     }
     
-    public function testListPayouts() {
+    function testListPayouts() {
         // given
         $charge = $this->gateway->createCharge(Data::chargeRequest());
-        $payout = $this->gateway->createPayout();
+        $this->gateway->createPayout();
         
         $this->gateway->createCharge(Data::chargeRequest());
         $this->gateway->createPayout();
@@ -59,11 +59,11 @@ class PayoutTest extends AbstractGatewayTestBase
         }
     }
 
-    public function testListPayoutTransactions() {
+    function testListPayoutTransactions() {
         // given
         $charge = $this->gateway->createCharge(Data::chargeRequest());
-        $charge2 = $this->gateway->createCharge(Data::chargeRequest());
-        $charge3 = $this->gateway->createCharge(Data::chargeRequest());
+        $this->gateway->createCharge(Data::chargeRequest());
+        $this->gateway->createCharge(Data::chargeRequest());
         
         $payout = $this->gateway->createPayout();
         
@@ -82,5 +82,50 @@ class PayoutTest extends AbstractGatewayTestBase
         foreach ($list->getList() as $payoutTransaction) {
             Assert::assertPayoutTransaction($payoutTransaction, $payout);
         }
+    }
+
+    function testWillNotCreateDuplicateIfSameIdempotencyKeyIsUsed()
+    {
+        // given
+        $this->gateway->createCharge(Data::chargeRequest());
+        $requestOptions = new RequestOptions();
+        $requestOptions->idempotencyKey(uniqid());
+
+        // when
+        $first_call_response = $this->gateway->createPayout($requestOptions);
+        $second_call_response = $this->gateway->createPayout($requestOptions);
+
+        // then
+        Assert::assertEquals($first_call_response->getId(), $second_call_response->getId());
+    }
+
+    function testWillCreateTwoInstancesIfDifferentIdempotencyKeysAreUsed()
+    {
+        // given
+        $this->gateway->createCharge(Data::chargeRequest());
+        $requestOptions = new RequestOptions();
+        $requestOptions->idempotencyKey(uniqid());
+        $otherRequestOptions = new RequestOptions();
+        $otherRequestOptions->idempotencyKey(uniqid());
+
+        // when
+        $first_call_response = $this->gateway->createPayout($requestOptions);
+        $second_call_response = $this->gateway->createPayout($otherRequestOptions);
+
+        // then
+        Assert::assertNotEquals($first_call_response->getId(), $second_call_response->getId());
+    }
+
+    function testWillCreateTwoInstancesIfNoIdempotencyKeysAreUsed()
+    {
+        // given
+        $this->gateway->createCharge(Data::chargeRequest());
+
+        // when
+        $first_call_response = $this->gateway->createPayout();
+        $second_call_response = $this->gateway->createPayout();
+
+        // then
+        Assert::assertNotEquals($first_call_response->getId(), $second_call_response->getId());
     }
 }
