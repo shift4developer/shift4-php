@@ -6,10 +6,11 @@ use Shift4\Connection\Connection;
 use Shift4\Connection\CurlConnection;
 use Shift4\Exception\Shift4Exception;
 use Shift4\Util\ObjectSerializer;
+use Shift4\Util\RequestOptions;
 
 class Shift4Gateway
 {
-    const VERSION = '3.1.0';
+    const VERSION = '3.2.0';
     const DEFAULT_ENDPOINT = 'https://api.shift4.com';
     const DEFAULT_UPLOADS_ENDPOINT = "https://uploads.api.shift4.com/";
 
@@ -40,18 +41,18 @@ class Shift4Gateway
      * @param \Shift4\Request\ChargeRequest $request
      * @return \Shift4\Response\Charge
      */
-    public function createCharge($request)
+    public function createCharge($request, RequestOptions $requestOptions = null)
     {
-        return $this->post('/charges', $request, '\Shift4\Response\Charge');
+        return $this->post('/charges', $request, '\Shift4\Response\Charge', $requestOptions);
     }
 
     /**
      * @param \Shift4\Request\CaptureRequest $request
      * @return \Shift4\Response\Charge
      */
-    public function captureCharge($request)
+    public function captureCharge($request, RequestOptions $requestOptions = null)
     {
-        return $this->post('/charges/{chargeId}/capture', $request, '\Shift4\Response\Charge');
+        return $this->post('/charges/{chargeId}/capture', $request, '\Shift4\Response\Charge', $requestOptions);
     }
 
     /**
@@ -67,9 +68,9 @@ class Shift4Gateway
      * @param \Shift4\Request\ChargeUpdateRequest $request
      * @return \Shift4\Response\Charge
      */
-    public function updateCharge($request)
+    public function updateCharge($request, RequestOptions $requestOptions = null)
     {
-        return $this->post('/charges/{chargeId}', $request, '\Shift4\Response\Charge');
+        return $this->post('/charges/{chargeId}', $request, '\Shift4\Response\Charge', $requestOptions);
     }
 
     /**
@@ -78,9 +79,9 @@ class Shift4Gateway
      *
      * @deprecated For backward compatibility only. Use "createRefund($request)".
      */
-    public function refundCharge($request)
+    public function refundCharge($request, RequestOptions $requestOptions = null)
     {
-        return $this->createRefund($request);
+        return $this->createRefund($request, $requestOptions);
     }
 
     /**
@@ -96,9 +97,9 @@ class Shift4Gateway
      * @param \Shift4\Request\CustomerRequest $request
      * @return \Shift4\Response\Customer
      */
-    public function createCustomer($request)
+    public function createCustomer($request, RequestOptions $requestOptions = null)
     {
-        return $this->post('/customers', $request, '\Shift4\Response\Customer');
+        return $this->post('/customers', $request, '\Shift4\Response\Customer', $requestOptions);
     }
 
     /**
@@ -114,9 +115,9 @@ class Shift4Gateway
      * @param \Shift4\Request\CustomerUpdateRequest $request
      * @return \Shift4\Response\Customer
      */
-    public function updateCustomer($request)
+    public function updateCustomer($request, RequestOptions $requestOptions = null)
     {
-        return $this->post('/customers/{customerId}', $request, '\Shift4\Response\Customer');
+        return $this->post('/customers/{customerId}', $request, '\Shift4\Response\Customer', $requestOptions);
     }
 
     /**
@@ -141,9 +142,9 @@ class Shift4Gateway
      * @param \Shift4\Request\CardRequest $request
      * @return \Shift4\Response\Card
      */
-    public function createCard($request)
+    public function createCard($request, RequestOptions $requestOptions = null)
     {
-        return $this->post('/customers/{customerId}/cards', $request, '\Shift4\Response\Card');
+        return $this->post('/customers/{customerId}/cards', $request, '\Shift4\Response\Card', $requestOptions);
     }
 
     /**
@@ -160,9 +161,9 @@ class Shift4Gateway
      * @param \Shift4\Request\CardUpdateRequest $request
      * @return \Shift4\Response\Card
      */
-    public function updateCard($request)
+    public function updateCard($request, RequestOptions $requestOptions = null)
     {
-        return $this->post('/customers/{customerId}/cards/{cardId}', $request, '\Shift4\Response\Card');
+        return $this->post('/customers/{customerId}/cards/{cardId}', $request, '\Shift4\Response\Card', $requestOptions);
     }
 
     /**
@@ -197,9 +198,9 @@ class Shift4Gateway
      * @param \Shift4\Request\PaymentMethodRequest $request
      * @return \Shift4\Response\PaymentMethod
      */
-    public function createPaymentMethod($request)
+    public function createPaymentMethod($request, RequestOptions $requestOptions = null)
     {
-        return $this->post("/payment-methods", $request, '\Shift4\Response\PaymentMethod');
+        return $this->post("/payment-methods", $request, '\Shift4\Response\PaymentMethod', $requestOptions);
     }
 
     /**
@@ -224,9 +225,9 @@ class Shift4Gateway
      * @param \Shift4\Request\SubscriptionRequest $request
      * @return \Shift4\Response\Subscription
      */
-    public function createSubscription($request)
+    public function createSubscription($request, RequestOptions $requestOptions = null)
     {
-        return $this->post('/customers/{customerId}/subscriptions', $request, '\Shift4\Response\Subscription');
+        return $this->post('/customers/{customerId}/subscriptions', $request, '\Shift4\Response\Subscription', $requestOptions);
     }
 
     /**
@@ -243,9 +244,9 @@ class Shift4Gateway
      * @param \Shift4\Request\SubscriptionUpdateRequest $request
      * @return \Shift4\Response\Subscription
      */
-    public function updateSubscription($request)
+    public function updateSubscription($request, RequestOptions $requestOptions = null)
     {
-        return $this->post('/customers/{customerId}/subscriptions/{subscriptionId}', $request, '\Shift4\Response\Subscription');
+        return $this->post('/customers/{customerId}/subscriptions/{subscriptionId}', $request, '\Shift4\Response\Subscription', $requestOptions);
     }
 
     /**
@@ -270,9 +271,9 @@ class Shift4Gateway
      * @param \Shift4\Request\PlanRequest $request
      * @return \Shift4\Response\Plan
      */
-    public function createPlan($request)
+    public function createPlan($request, RequestOptions $requestOptions = null)
     {
-        return $this->post('/plans', $request, '\Shift4\Response\Plan');
+        return $this->post('/plans', $request, '\Shift4\Response\Plan', $requestOptions);
     }
 
     /**
@@ -288,9 +289,9 @@ class Shift4Gateway
      * @param \Shift4\Request\PlanUpdateRequest $request
      * @return \Shift4\Response\Plan
      */
-    public function updatePlan($request)
+    public function updatePlan($request, RequestOptions $requestOptions = null)
     {
-        return $this->post('/plans/{planId}', $request, '\Shift4\Response\Plan');
+        return $this->post('/plans/{planId}', $request, '\Shift4\Response\Plan', $requestOptions);
     }
 
     /**
@@ -351,9 +352,9 @@ class Shift4Gateway
      * @param \Shift4\Request\BlacklistRuleRequest $request
      * @return \Shift4\Response\BlacklistRule
      */
-    public function createBlacklistRule($request)
+    public function createBlacklistRule($request, RequestOptions $requestOptions = null)
     {
-        return $this->post('/blacklist', $request, '\Shift4\Response\BlacklistRule');
+        return $this->post('/blacklist', $request, '\Shift4\Response\BlacklistRule', $requestOptions);
     }
 
     /**
@@ -387,9 +388,9 @@ class Shift4Gateway
      * @param \Shift4\Request\CreditRequest $request
      * @return \Shift4\Response\Credit
      */
-    public function createCredit($request)
+    public function createCredit($request, RequestOptions $requestOptions = null)
     {
-        return $this->post('/credits', $request, '\Shift4\Response\Credit');
+        return $this->post('/credits', $request, '\Shift4\Response\Credit', $requestOptions);
     }
 
     /**
@@ -405,9 +406,9 @@ class Shift4Gateway
      * @param \Shift4\Request\CreditUpdateRequest $request
      * @return \Shift4\Response\Credit
      */
-    public function updateCredit($request)
+    public function updateCredit($request, RequestOptions $requestOptions = null)
     {
-        return $this->post('/credits/{creditId}', $request, '\Shift4\Response\Credit');
+        return $this->post('/credits/{creditId}', $request, '\Shift4\Response\Credit', $requestOptions);
     }
 
     /**
@@ -463,18 +464,18 @@ class Shift4Gateway
      * @param \Shift4\Request\DisputeUpdateRequest $request
      * @return \Shift4\Response\Dispute
      */
-    public function updateDispute($request)
+    public function updateDispute($request, RequestOptions $requestOptions = null)
     {
-        return $this->post('/disputes/{disputeId}', $request, '\Shift4\Response\Dispute');
+        return $this->post('/disputes/{disputeId}', $request, '\Shift4\Response\Dispute', $requestOptions);
     }
 
     /**
      * @param string $disputeId
      * @return \Shift4\Response\Dispute
      */
-    public function closeDispute($disputeId)
+    public function closeDispute($disputeId, RequestOptions $requestOptions = null)
     {
-        return $this->post("/disputes/{$disputeId}/close", null, '\Shift4\Response\Dispute');
+        return $this->post("/disputes/{$disputeId}/close", null, '\Shift4\Response\Dispute', $requestOptions);
     }
 
     /**
@@ -517,9 +518,9 @@ class Shift4Gateway
      * @param \Shift4\Request\RefundRequest $request
      * @return \Shift4\Response\Refund
      */
-    public function createRefund($request)
+    public function createRefund($request, RequestOptions $requestOptions = null)
     {
-        return $this->post('/refunds', $request, '\Shift4\Response\Refund');
+        return $this->post('/refunds', $request, '\Shift4\Response\Refund', $requestOptions);
     }
 
     /**
@@ -543,9 +544,9 @@ class Shift4Gateway
     /**
      * @return \Shift4\Response\Payout
      */
-    public function createPayout()
+    public function createPayout($requestOptions = null)
     {
-        return $this->post('/payouts', null, '\Shift4\Response\Payout');
+        return $this->post('/payouts', null, '\Shift4\Response\Payout', $requestOptions);
     }
 
     /**
@@ -592,10 +593,10 @@ class Shift4Gateway
         return $this->objectSerializer->deserialize($response['body'], $responseClass);
     }
 
-    private function post($path, $request, $responseClass)
+    private function post($path, $request, $responseClass, RequestOptions $requestOptions = null)
     {
         $requestBody = $this->objectSerializer->serialize($request, $path);
-        $response = $this->connection->post($this->endpoint . $path, $requestBody, $this->buildHeaders());
+        $response = $this->connection->post($this->endpoint . $path, $requestBody, $this->buildHeaders($requestOptions));
         $this->ensureSuccess($response);
         return $this->objectSerializer->deserialize($response['body'], $responseClass);
     }
@@ -647,13 +648,20 @@ class Shift4Gateway
         return $path . $queryString;
     }
 
-    private function buildHeaders()
+    private function buildHeaders(RequestOptions $requestOptions = null)
     {
-        return [
+        $headers = [
             'Authorization' => 'Basic ' . base64_encode($this->privateKey . ':'),
             'Content-Type'  => 'application/json',
             'User-Agent'    => ($this->userAgent ? $this->userAgent . ' ' : '') . 'Shift4-PHP/' . self::VERSION . ' (PHP/' . phpversion() . ')'
         ];
+
+        if ($requestOptions !== null && $requestOptions->hasIdempotencyKey())
+        {
+            $headers['Idempotency-Key'] = $requestOptions->getIdempotencyKey();
+        }
+
+        return $headers;
     }
 
     public function setPrivateKey($privateKey)

@@ -7,7 +7,7 @@ use Shift4\Request\CustomerRequest;
 class ExceptionTest extends AbstractGatewayTestBase
 {
 
-    public function testFailedCharge()
+    function testFailedCharge()
     {
         // given
         $request = Data::chargeRequest();
@@ -25,7 +25,7 @@ class ExceptionTest extends AbstractGatewayTestBase
         self::assertEquals('51', $e->getIssuerDeclineCode());
     }
     
-    public function testFailedCredit()
+    function testFailedCredit()
     {
         // given
         $request = Data::creditRequest();

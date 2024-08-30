@@ -7,7 +7,7 @@ use Shift4\Request\FraudWarningListRequest;
 class FraudWarningTest extends AbstractGatewayTestBase
 {
 
-    public function testRetrieveFraudWarning()
+    function testRetrieveFraudWarning()
     {
         // given
         $fraudWarning = $this->createFraudWarning();
@@ -19,7 +19,7 @@ class FraudWarningTest extends AbstractGatewayTestBase
         Assert::assertFraudWarning($fraudWarning, $retrievedFraudWarning);
     }
 
-    public function testListFraudWarnings()
+    function testListFraudWarnings()
     {
         // given
         $this->createFraudWarning();

@@ -7,7 +7,7 @@ use Shift4\Request\CreatedFilter;
 class FileUploadTest extends AbstractGatewayTestBase
 {
 
-    public function testCreateFileUpload()
+    function testCreateFileUpload()
     {
         // given
         $file = Data::imageFile();
@@ -19,7 +19,7 @@ class FileUploadTest extends AbstractGatewayTestBase
         Assert::assertFileUpload($file, $fileUpload);
     }
 
-    public function testRetrieveFileUpload()
+    function testRetrieveFileUpload()
     {
         // given
         $file = Data::imageFile();
@@ -32,7 +32,7 @@ class FileUploadTest extends AbstractGatewayTestBase
         Assert::assertFileUpload($file, $fileUpload);
     }
 
-    public function testListFileUploads()
+    function testListFileUploads()
     {
         // given
         $file = Data::imageFile();

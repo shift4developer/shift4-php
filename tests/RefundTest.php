@@ -4,11 +4,12 @@ require_once 'bootstrap.php';
 use Shift4\Request\RefundRequest;
 use Shift4\Request\RefundListRequest;
 use Shift4\Request\CreatedFilter;
+use Shift4\Util\RequestOptions;
 
 class RefundTest extends AbstractGatewayTestBase
 {
     
-    public function testCreateRefund() {
+    function testCreateRefund() {
         // given
         $charge = $this->gateway->createCharge(Data::chargeRequest());
         
@@ -29,7 +30,7 @@ class RefundTest extends AbstractGatewayTestBase
         Assert::assertRefund($request, $charge->getRefunds()[0], $refund, false);
     }
 
-    public function testCreateRefundUsingOldMethod() {
+    function testCreateRefundUsingOldMethod() {
         // given
         $charge = $this->gateway->createCharge(Data::chargeRequest());
         
@@ -50,7 +51,7 @@ class RefundTest extends AbstractGatewayTestBase
         Assert::assertRefund($request, $charge->getRefunds()[0], $refund, false);
     }
     
-    public function testRetrieveRefund() {
+    function testRetrieveRefund() {
         // given
         $charge = $this->gateway->createCharge(Data::chargeRequest());
         
@@ -66,7 +67,7 @@ class RefundTest extends AbstractGatewayTestBase
         Assert::assertRefund($request, $charge, $refund);
     }
     
-    public function testListRefunds() {
+    function testListRefunds() {
         // given
         $charge = $this->gateway->createCharge(Data::chargeRequest());
 
@@ -94,5 +95,99 @@ class RefundTest extends AbstractGatewayTestBase
         foreach ($list->getList() as $refund) {
             Assert::assertRefund($refundRequest, $charge, $refund);
         }
+    }
+
+    function testWillNotCreateDuplicateIfSameIdempotencyKeyIsUsed()
+    {
+        // given
+        $charge = $this->gateway->createCharge(Data::chargeRequest());
+        $request = (new RefundRequest())
+            ->chargeId($charge->getId())
+            ->amount(100);
+        $requestOptions = new RequestOptions();
+        $requestOptions->idempotencyKey(uniqid());
+
+        // when
+        $first_call_response = $this->gateway->createRefund($request, $requestOptions);
+        $second_call_response = $this->gateway->createRefund($request, $requestOptions);
+
+        // then
+        Assert::assertEquals($first_call_response->getId(), $second_call_response->getId());
+    }
+
+    function testWillNotCreateDuplicateIfSameIdempotencyKeyIsUsedForOldMethod()
+    {
+        // given
+        $charge = $this->gateway->createCharge(Data::chargeRequest());
+        $request = (new RefundRequest())
+            ->chargeId($charge->getId())
+            ->amount(100);
+        $requestOptions = new RequestOptions();
+        $requestOptions->idempotencyKey(uniqid());
+
+        // when
+        $first_call_response = $this->gateway->refundCharge($request, $requestOptions);
+        $second_call_response = $this->gateway->refundCharge($request, $requestOptions);
+
+        // then
+        Assert::assertEquals($first_call_response->getId(), $second_call_response->getId());
+    }
+
+    function testWillCreateTwoInstancesIfDifferentIdempotencyKeysAreUsed()
+    {
+        // given
+        $charge = $this->gateway->createCharge(Data::chargeRequest());
+        $request = (new RefundRequest())
+            ->chargeId($charge->getId())
+            ->amount(100);
+        $requestOptions = new RequestOptions();
+        $requestOptions->idempotencyKey(uniqid());
+        $otherRequestOptions = new RequestOptions();
+        $otherRequestOptions->idempotencyKey(uniqid());
+
+        // when
+        $first_call_response = $this->gateway->createRefund($request, $requestOptions);
+        $second_call_response = $this->gateway->createRefund($request, $otherRequestOptions);
+
+        // then
+        Assert::assertNotEquals($first_call_response->getId(), $second_call_response->getId());
+    }
+
+    function testWillCreateTwoInstancesIfNoIdempotencyKeysAreUsed()
+    {
+        // given
+        $charge = $this->gateway->createCharge(Data::chargeRequest());
+        $request = (new RefundRequest())
+            ->chargeId($charge->getId())
+            ->amount(100);
+
+        // when
+        $first_call_response = $this->gateway->createRefund($request);
+        $second_call_response = $this->gateway->createRefund($request);
+
+        // then
+        Assert::assertNotEquals($first_call_response->getId(), $second_call_response->getId());
+    }
+
+    function testWillThrowExceptionIfSameIdempotencyKeyIsUsedForTwoDifferentCreateRequests()
+    {
+        // given
+        $charge = $this->gateway->createCharge(Data::chargeRequest());
+        $request = (new RefundRequest())
+            ->chargeId($charge->getId())
+            ->amount(100);
+        $requestOptions = new RequestOptions();
+        $requestOptions->idempotencyKey(uniqid());
+
+        // when
+        $this->gateway->createRefund($request, $requestOptions);
+        $request->amount(42);
+
+        $exception = Assert::catchShift4Exception(function () use ($request, $requestOptions) {
+            $this->gateway->createRefund($request, $requestOptions);
+        });
+
+        // then
+        Assert::assertSame('Idempotent key used for request with different parameters.', $exception->getMessage());
     }
 }
