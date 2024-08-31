@@ -3,8 +3,11 @@ use Shift4\Request\ChargeRequest;
 use Shift4\Request\CustomerRequest;
 use Shift4\Request\CardRequest;
 use Shift4\Request\FraudCheckDataRequest;
+use Shift4\Request\PaymentMethodRequest;
+use Shift4\Request\PaymentMethodRequestGooglePay;
 use Shift4\Request\SubscriptionRequest;
 use Shift4\Request\PlanRequest;
+use Shift4\Request\ThreeDSecure;
 use Shift4\Request\TokenRequest;
 use Shift4\Request\BlacklistRuleRequest;
 use Shift4\Request\CheckoutRequest;
@@ -19,6 +22,7 @@ use Shift4\Request\ThreeDSecureRequest;
 use Shift4\Request\CheckoutRequestThreeDSecure;
 use Shift4\Request\CreditRequest;
 use Shift4\Request\DisputeEvidenceRequest;
+use Shift4\Response\PaymentMethod;
 
 class Data
 {
@@ -247,6 +251,46 @@ class Data
             ->name('billing-name')
             ->address(self::addressRequest('billing'))
             ->vat('billing-vat');
+    }
+
+    /**
+     * @return PaymentMethodRequest
+     */
+    public static function googlePayPaymentMethodPanOnly()
+    {
+        $paymentMethod = new PaymentMethodRequest();
+        return $paymentMethod
+            ->type("google_pay")
+            ->googlePay((new PaymentMethodRequestGooglePay())
+                ->token("PAN_ONLY"));
+    }
+
+    /**
+     * @return PaymentMethodRequest
+     */
+    public static function googlePayPaymentMethod3ds()
+    {
+        $paymentMethod = new PaymentMethodRequest();
+        return $paymentMethod
+            ->type("google_pay")
+            ->googlePay((new PaymentMethodRequestGooglePay())
+                ->token("CRYPTOGRAM_3DS"));
+    }
+
+
+    /**
+     * @param $source PaymentMethod
+     * @return PaymentMethodRequest
+     */
+    public static function threeDSecurePaymentMethod($source, $currency, $amount)
+    {
+        $paymentMethod = new PaymentMethodRequest();
+        return $paymentMethod
+            ->type("three_d_secure")
+            ->source($source->getId())
+            ->threeDSecure((new ThreeDSecure())
+                ->currency($currency)
+                ->amount($amount));
     }
 
     private static function addressRequest($prefix) {

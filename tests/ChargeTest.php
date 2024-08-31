@@ -198,6 +198,36 @@ class ChargeTest extends AbstractGatewayTestBase
         self::assertEquals(false, $charge->getDispute()->getAcceptedAsLost());
     }
 
+    public function testCreateChargeForGooglePayPanOnly()
+    {
+        // given
+        $request = Data::googlePayPaymentMethodPanOnly();
+        $response = $this->gateway->createPaymentMethod($request);
+
+        // then
+        Assert::assertEquals($request->getType(), $response->getType());
+        Assert::assertNotNull($response->getGooglePay());
+        Assert::assertNotNull($response->getFlow());
+        Assert::assertNotNull($response->getFlow()->getNextAction());
+    }
+
+    public function testCreateChargeForGoogle3ds()
+    {
+        // given
+        $source = $this->gateway->createPaymentMethod(Data::googlePayPaymentMethod3ds());
+        $request = Data::threeDSecurePaymentMethod($source, 'USD', 400);
+        $response = $this->gateway->createPaymentMethod($request);
+
+        // then
+        Assert::assertEquals('three_d_secure', $response->getType());
+        Assert::assertNotNull($response->getThreeDSecure());
+        Assert::assertEquals($request->getThreeDSecure()->getAmount(), $response->getThreeDSecure()->getAmount());
+        Assert::assertEquals($request->getThreeDSecure()->getCurrency(), $response->getThreeDSecure()->getCurrency());
+        Assert::assertEquals($request->getSource(), $response->getSource()['id']);
+        Assert::assertNotNull($response->getFlow());
+        Assert::assertNotNull($response->getFlow()->getNextAction());
+    }
+
     function testWillNotCreateDuplicateIfSameIdempotencyKeyIsUsed()
     {
         // given
