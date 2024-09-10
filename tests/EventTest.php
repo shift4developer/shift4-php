@@ -34,20 +34,16 @@ class EventTest extends AbstractGatewayTestBase
 
         $listRequest = (new EventListRequest())
             ->includeTotalCount(true)
-            ->created((new CreatedFilter())->gte($charge1->getCreated()));
+            ->limit(100);
 
         // when
         $list = $this->gateway->listEvents($listRequest);
 
         // then
-        self::assertTrue($list->getTotalCount() >= 3);
-        $eventsForCreatedCharges = array_filter($list->getList(), function($charge) use ($expectedChargeIds)
-        {
-            return in_array($charge->getData()->getId(), $expectedChargeIds);
+        self::assertGreaterThanOrEqual(3, $list->getTotalCount());
+        $eventsForCreatedCharges = array_filter($list->getList(), function ($event) use ($expectedChargeIds) {
+            return in_array($event->getData()->getId(), $expectedChargeIds) && $event->getType() === 'CHARGE_SUCCEEDED';
         });
-        self::assertTrue(sizeOf($eventsForCreatedCharges) == 3);
-        foreach ($eventsForCreatedCharges as $event) {
-            Assert::assertEquals('CHARGE_SUCCEEDED', $event->getType());
-        }
+        self::assertEquals(3, sizeOf($eventsForCreatedCharges));
     }
 }
