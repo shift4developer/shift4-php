@@ -11,7 +11,7 @@ jobs:
       - name: PHP Composer
         uses: php-actions/composer@v6
       - name: Tests
-        uses: php-actions/phpunit@v3.0.2
+        uses: php-actions/phpunit@v3.0.0
         with:
           args: tests
         env:
