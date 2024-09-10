@@ -13,10 +13,13 @@ class EventTest extends AbstractGatewayTestBase
         $chargeRequest = Data::chargeRequest();
         $charge = $this->gateway->createCharge($chargeRequest);
 
-        $eventId = $this->gateway->listEvents()->getList()[0]->getId();
+        $events = $this->gateway->listEvents();
+        $expectedEvent = array_filter($events->getList(), function ($event) use ($charge) {
+            return $event->getData()->getId() === $charge->getId() && $event->getType() === 'CHARGE_SUCCEEDED';
+        })[0];
 
         // when
-        $event = $this->gateway->retrieveEvent($eventId);
+        $event = $this->gateway->retrieveEvent($expectedEvent->getId());
 
         // then
         Assert::assertChargeSucceededEvent($chargeRequest, $event);
