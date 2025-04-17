@@ -268,6 +268,15 @@ class Shift4Gateway
     }
 
     /**
+     * @param \Shift4\Request\SubscriptionListRequest $request
+     * @return \Shift4\Response\ListResponse
+     */
+    public function listAllSubscriptions($request)
+    {
+        return $this->getList('/subscriptions', $request, '\Shift4\Response\Subscription');
+    }
+
+    /**
      * @param \Shift4\Request\PlanRequest $request
      * @return \Shift4\Response\Plan
      */
