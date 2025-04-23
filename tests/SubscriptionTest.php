@@ -34,7 +34,7 @@ class SubscriptionTest extends AbstractGatewayTestBase
         $subscription = $this->gateway->createSubscription($request);
         
         // when
-        $subscription = $this->gateway->retrieveSubscription($subscription->getCustomerId(), $subscription->getId());
+        $subscription = $this->gateway->retrieveSubscription($subscription->getId());
         
         // then
         Assert::assertSubscription($request, $subscription);
