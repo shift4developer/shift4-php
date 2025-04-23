@@ -10,7 +10,7 @@ use Shift4\Util\RequestOptions;
 
 class Shift4Gateway
 {
-    const VERSION = '3.3.0';
+    const VERSION = '4.0.0';
     const DEFAULT_ENDPOINT = 'https://api.shift4.com';
     const DEFAULT_UPLOADS_ENDPOINT = "https://uploads.api.shift4.com/";
 
@@ -227,17 +227,16 @@ class Shift4Gateway
      */
     public function createSubscription($request, RequestOptions $requestOptions = null)
     {
-        return $this->post('/customers/{customerId}/subscriptions', $request, '\Shift4\Response\Subscription', $requestOptions);
+        return $this->post('/subscriptions', $request, '\Shift4\Response\Subscription', $requestOptions);
     }
 
     /**
-     * @param string $customerId
      * @param string $subscriptionId
      * @return \Shift4\Response\Subscription
      */
-    public function retrieveSubscription($customerId, $subscriptionId)
+    public function retrieveSubscription($subscriptionId)
     {
-        return $this->get("/customers/{$customerId}/subscriptions/{$subscriptionId}", '\Shift4\Response\Subscription');
+        return $this->get("/subscriptions/{$subscriptionId}", '\Shift4\Response\Subscription');
     }
 
     /**
@@ -246,7 +245,7 @@ class Shift4Gateway
      */
     public function updateSubscription($request, RequestOptions $requestOptions = null)
     {
-        return $this->post('/customers/{customerId}/subscriptions/{subscriptionId}', $request, '\Shift4\Response\Subscription', $requestOptions);
+        return $this->post('/subscriptions/{subscriptionId}', $request, '\Shift4\Response\Subscription', $requestOptions);
     }
 
     /**
@@ -255,7 +254,7 @@ class Shift4Gateway
      */
     public function cancelSubscription($request)
     {
-        return $this->delete('/customers/{customerId}/subscriptions/{subscriptionId}', $request, '\Shift4\Response\Subscription');
+        return $this->delete('/subscriptions/{subscriptionId}', $request, '\Shift4\Response\Subscription');
     }
 
     /**
@@ -264,7 +263,7 @@ class Shift4Gateway
      */
     public function listSubscriptions($request)
     {
-        return $this->getList('/customers/{customerId}/subscriptions', $request, '\Shift4\Response\Subscription');
+        return $this->getList('/subscriptions', $request, '\Shift4\Response\Subscription');
     }
 
     /**

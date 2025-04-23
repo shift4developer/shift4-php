@@ -228,7 +228,7 @@ class Assert extends \PHPUnit\Framework\Assert
         $error = substr($error, 0, strpos($error, "\">") + 1);
         self::assertFalse($hasError, "Error for checkout url $checkoutUrl: $error");
         
-        $hasInput = (strpos($checkoutPage, '<input') !== false);
+        $hasInput = (strpos($checkoutPage, 'Shift4Checkout.open(') !== false);
         self::assertTrue($hasInput);
     }
 
