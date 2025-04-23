@@ -5,6 +5,7 @@ namespace Shift4;
 use Shift4\Connection\Connection;
 use Shift4\Connection\CurlConnection;
 use Shift4\Exception\Shift4Exception;
+use Shift4\Response\ThreeDSecureProcess;
 use Shift4\Util\ObjectSerializer;
 use Shift4\Util\RequestOptions;
 
@@ -345,6 +346,15 @@ class Shift4Gateway
     public function retrieveToken($tokenId)
     {
         return $this->get("/tokens/{$tokenId}", '\Shift4\Response\Token');
+    }
+
+    /**
+     * @param \Shift4\Request\ThreeDSecureProcessRequest $request
+     * @return ThreeDSecureProcess
+     */
+    public function init3DSecure($request)
+    {
+        return $this->post('/3d-secure', $request, '\Shift4\Response\ThreeDSecureProcess');
     }
 
     /**
