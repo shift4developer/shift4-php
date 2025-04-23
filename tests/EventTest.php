@@ -15,7 +15,7 @@ class EventTest extends AbstractGatewayTestBase
 
         $events = $this->gateway->listEvents();
         $expectedEvent = array_filter($events->getList(), function ($event) use ($charge) {
-            return $event->getData()->getId() === $charge->getId() && $event->getType() === 'CHARGE_SUCCEEDED';
+            return $event->getType() === 'CHARGE_SUCCEEDED' && $event->getData()->getId() === $charge->getId();
         })[0];
 
         // when
@@ -45,7 +45,7 @@ class EventTest extends AbstractGatewayTestBase
         // then
         self::assertGreaterThanOrEqual(3, $list->getTotalCount());
         $eventsForCreatedCharges = array_filter($list->getList(), function ($event) use ($expectedChargeIds) {
-            return in_array($event->getData()->getId(), $expectedChargeIds) && $event->getType() === 'CHARGE_SUCCEEDED';
+            return $event->getType() === 'CHARGE_SUCCEEDED' && in_array($event->getData()->getId(), $expectedChargeIds);
         });
         self::assertEquals(3, sizeOf($eventsForCreatedCharges));
     }
